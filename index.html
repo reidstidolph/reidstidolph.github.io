@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>128T Template Builder</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+</head>
+
+<body>
+  <v-app id="app">
+    <div>
+      <v-navigation-drawer width="500" fixed clipped app>
+        <v-form>
+          <v-container>
+            <h2>Inputs</h2>
+<!--
+################################################################################
+#                                                                              #
+# For each template input you want to define, create an input text field.      #
+# 'label="name"' is the text name that will be displayed to the user.          #
+# 'v-model="variable"' needs to match defined variable in the data model       #
+#                                                                              #
+################################################################################
+-->
+            <v-text-field label="Router Name" v-model="routerName" regular></v-text-field>
+            <v-text-field label="Site Address" v-model="siteAddress" regular></v-text-field>
+            <v-text-field label="Site Coordinates" v-model="siteCoordinates" regular></v-text-field>
+            <v-text-field label="Node Name" v-model="nodeName" regular></v-text-field>
+            <v-text-field label="WAN Device PCI Address" v-model="wanPciAddr" regular></v-text-field>
+            <v-text-field label="WAN IP Address" v-model="wanAddr" regular></v-text-field>
+            <v-text-field label="WAN Prefix" v-model="wanPrefix" reagular></v-text-field>
+            <v-text-field label="WAN Gateway" v-model="wanGw" regular></v-text-field>
+            <v-text-field label="LAN Device PCI Address" v-model="lanPciAddr" regular></v-text-field>
+            <v-text-field label="LAN IP Address" v-model="lanAddr" regular></v-text-field>
+            <v-text-field label="LAN Prefix" v-model="lanPrefix" reagular></v-text-field>
+            <v-text-field label="LAN Tenant" v-model="lanTenant" regular></v-text-field>
+          <v-container>
+        </v-form>
+      </v-navigation-drawer>
+      <v-content>
+        <v-container fluid>
+          <div >
+            <h2>Router Config</h2>
+            <v-card dark>
+              <v-snackbar v-model="textCopied" color="success" :timeout="timeout" top right>Copied to clipboard!</v-snackbar>
+              <v-btn fab right top absolute color="blue lighten-2 white--text" data-clipboard-action="copy" data-clipboard-target="#configText"><i class="material-icons">file_copy</i></v-btn>
+              <v-container>
+<!--
+################################################################################
+#                                                                              #
+# Put config text with variables enclosed in the following <pre></pre> tags.   #
+# Variables enclosed in double curly braces. Example:                          #
+#  {{ variableName }}                                                          #
+#                                                                              #
+################################################################################
+-->
+<pre id="configText">
+config
+    authority
+        router       {{ routerName }}
+            name                  {{ routerName }}
+            location              "{{ siteAddress }}"
+            location-coordinates  {{ siteCoordinates }}
+
+            node                        {{ nodeName }}
+                name                    {{ nodeName }}
+                role                    combo
+
+                device-interface          WAN
+                    name                  WAN
+                    type                  ethernet
+                    pci-address           {{ wanPciAddr }}
+
+                    network-interface     WAN
+                        name                 WAN
+                        type                 external
+                        source-nat           true
+
+                        address              {{ wanAddr }}
+                            ip-address     {{ wanAddr }}
+                            prefix-length  {{ wanPrefix }}
+                            gateway        {{ wanGw }}
+                        exit
+                    exit
+                 exit
+
+                 device-interface         LAN
+                    name                  LAN
+                    type                  ethernet
+                    pci-address           {{ lanPciAddr }}
+
+                    network-interface     LAN
+                        name                 LAN
+                        type                 external
+                        tenant               {{ lanTenant }}
+
+                        address              {{ lanAddr }}
+                            ip-address     {{ lanAddr }}
+                            prefix-length  {{ lanPrefix }}
+                        exit
+                    exit
+                exit
+            exit
+        exit
+    exit
+exit
+</pre>
+              </v-container>
+            </v-card>
+          </div>
+        </v-container>
+      <v-content>
+    </div>
+  <v-toolbar class="blue lighten-2 white--text" fixed clipped-left app>
+    <v-toolbar-title>128T Config Builder</v-toolbar-title>
+  </v-toolbar>
+
+  </v-app>
+</body>
+<script type="text/javascript">
+  var model = {
+    textCopied: false,
+    timeout: 6000,
+/*
+################################################################################
+#                                                                              #
+# Define each variable in the 'data' object, within the following script.      #
+#                                                                              #
+################################################################################
+*/
+    routerName: '',
+    nodeName: '',
+    siteAddress: '',
+    siteCoordinates: '',
+    wanPciAddr: '',
+    wanAddr: '',
+    wanPrefix: '',
+    wanGw: '',
+    lanPciAddr: '',
+    lanAddr: '',
+    lanPrefix: '',
+    lanTenant: '',
+  }
+  var clipboard = new ClipboardJS('.v-btn')
+  var app = new Vue({
+    el: '#app',
+    data: model
+  })
+  clipboard.on('success', ()=> {
+    model.textCopied = true
+  })
+</script>
+</html>

@@ -115,6 +115,7 @@ let template = `config
                     node-name  {{ model.nodeName }}
                     interface  WAN1-vlan{{ model.wanVlan1 }}
                     gateway-ip  {{ model.wanGw1 }}
+                exit
 
                 next-hop      {{ model.nodeName }} WAN2-vlan{{ model.wanVlan2 }}
                     node-name  {{ model.nodeName }}

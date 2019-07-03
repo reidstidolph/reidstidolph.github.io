@@ -17,12 +17,12 @@ let template = `config
             system
                 ntp
 
-                    server  {{ mode1.ntp1 }}
-                        ip-address  {{ mode1.ntp1 }}
+                    server  {{ model.ntp1 }}
+                        ip-address  {{ model.ntp1 }}
                     exit
 
-                    server  {{ mode1.ntp2 }}
-                        ip-address  {{ mode1.ntp2 }}
+                    server  {{ model.ntp2 }}
+                        ip-address  {{ model.ntp2 }}
                     exit
                 exit
             exit

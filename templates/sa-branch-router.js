@@ -13,6 +13,7 @@ let template = `config
             name                  {{ model.routerName }}
             location              "{{ model.siteAddress }}"
             location-coordinates  {{ model.siteCoordinates }}
+            inter-node-security   encrypt-hmac-disabled
 
             system
                 ntp

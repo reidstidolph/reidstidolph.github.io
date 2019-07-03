@@ -134,7 +134,7 @@ let template = `config
             name                 encrypt-hmac-disabled
             description          "Encryption and message authentication disabled"
             encrypt              false
-            hmac                 false
+            hmac-mode            false
             adaptive-encryption  false
         exit
 

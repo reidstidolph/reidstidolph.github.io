@@ -2,7 +2,7 @@
 ################################################################################
 #                                                                              #
 # Put config text with variables enclosed in the following <pre></pre> tags.   #
-# Variables enclosed in double curly braces. Example:                          #
+# Variables enclosed in double curly braces.  Example:                         #
 #  {{ variableName }}                                                          #
 #                                                                              #
 ################################################################################
@@ -154,7 +154,7 @@ let template = `config
 
         service-policy  choice1-choice2
             name                         choice1-choice2
- 
+
             vector                       choice1
                 name      choice1
                 priority  ordered

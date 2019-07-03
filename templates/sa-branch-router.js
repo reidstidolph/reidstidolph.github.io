@@ -9,6 +9,9 @@
 */
 let template = `config
     authority
+        name               {{ model.authorityName }}
+        conductor-address  {{ model.conductorAddr1 }}
+
         router       {{ model.routerName }}
             name                  {{ model.routerName }}
             location              "{{ model.siteAddress }}"
@@ -179,6 +182,8 @@ var model = {
 #                                                                              #
 ################################################################################
 */
+  authorityName: '',
+  conductorAddr1: '',
   routerName: '',
   siteAddress: '',
   siteCoordinates: '',

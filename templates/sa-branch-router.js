@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>128T Template Builder</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+  <style>[v-cloak] { display: none;}</style>
+</head>
+
+<body>
+  <v-app id="app" v-cloak>
+    <div>
+      <v-navigation-drawer width="500" v-model="drawer" fixed clipped app hide-overlay>
+        <v-form>
+          <v-container>
+            <h2>Inputs</h2>
+<!--
+################################################################################
+#                                                                              #
+# For each template input you want to define, create an input text field.      #
+# 'label="name"' is the text name that will be displayed to the user.          #
+# 'v-model="variable"' needs to match defined variable in the data model       #
+#                                                                              #
+################################################################################
+-->
+            <v-text-field label="Router Name" v-model="model.routerName" regular></v-text-field>
+            <v-text-field label="Site Address" v-model="model.siteAddress" regular></v-text-field>
+            <v-text-field label="Site Coordinates" v-model="model.siteCoordinates" regular></v-text-field>
+            <v-text-field label="NTP Server1" v-model="mode1.ntp1" regular></v-text-field>
+            <v-text-field label="NTP Server2" v-model="mode1.ntp2" regular></v-text-field>
+            <v-text-field label="Node Name" v-model="model.nodeName" regular></v-text-field>
+            <v-text-field label="WAN1 VLAN" v-model="model.wanVlan1" regular></v-text-field>
+            <v-text-field label="WAN1 Device PCI Address" v-model="model.wanPciAddr1" regular></v-text-field>
+            <v-text-field label="WAN1 IP Address" v-model="model.wanAddr1" regular></v-text-field>
+            <v-text-field label="WAN1 Prefix" v-model="model.wanPrefix1" reagular></v-text-field>
+            <v-text-field label="WAN1 Gateway" v-model="model.wanGw1" regular></v-text-field>
+            <v-text-field label="WAN2 VLAN" v-model="model.wanVlan2" regular></v-text-field>
+            <v-text-field label="WAN2 Device PCI Address" v-model="model.wanPciAddr2" regular></v-text-field>
+            <v-text-field label="WAN2 IP Address" v-model="model.wanAddr2" regular></v-text-field>
+            <v-text-field label="WAN2 Prefix" v-model="model.wanPrefix2" reagular></v-text-field>
+            <v-text-field label="WAN2 Gateway" v-model="model.wanGw2" regular></v-text-field>
+            <v-text-field label="LAN VLAN" v-model="model.lanVlan" regular></v-text-field>
+            <v-text-field label="LAN Device PCI Address" v-model="model.lanPciAddr" regular></v-text-field>
+            <v-text-field label="LAN IP Address" v-model="model.lanAddr" regular></v-text-field>
+            <v-text-field label="LAN Prefix" v-model="model.lanPrefix" reagular></v-text-field>
+            <v-text-field label="LAN Tenant" v-model="model.lanTenant" regular></v-text-field>
+          <v-container>
+        </v-form>
+      </v-navigation-drawer>
+      <v-content>
+        <v-container fluid>
+          <div >
+            <h2>Router Config</h2>
+            <v-card dark>
+              <v-snackbar v-model="textCopied" color="success" :timeout="timeout" top right>Copied to clipboard!</v-snackbar>
+              <v-btn fab right top absolute style="background-color:#00ADEF" class="white--text" data-clipboard-action="copy" data-clipboard-target="#configText"><i class="material-icons">file_copy</i></v-btn>
+              <v-container>
+                <pre id="configText"></pre>
+              </v-container>
+            </v-card>
+          </div>
+        </v-container>
+      <v-content>
+    </div>
+  <v-toolbar style="background-color:#00ADEF" class="white--text" fixed clipped-left app>
+    <v-toolbar-side-icon class="white--text" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+    <v-toolbar-title>128T Config Builder: Standalone Branch Router</v-toolbar-title>
+  </v-toolbar>
+  </v-app>
+</body>
+<script src="sa-branch-router.js" type="text/javascript"></script>
+<script>
+var clipboard = new ClipboardJS('.v-btn')
+var app = new Vue({
+  el: '#app',
+  data: {
+    drawer: true,
+    textCopied: false,
+    timeout: 6000,
+    model : model
+  }
+})
+clipboard.on('success', ()=> {
+  model.textCopied = true
+})
+</script>
+</html>

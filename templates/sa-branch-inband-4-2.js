@@ -118,7 +118,7 @@ let template = `config
 
                         management-vector
                             name           loopback
-                            priority       ordered
+                            priority       100
 
                         address            {{ model.loGateway }}
                             ip-address        {{ model.loGateway }}
@@ -167,7 +167,7 @@ let template = `config
             name                 encrypt-hmac-disabled
             description          "Encryption and message authentication disabled"
             encrypt              false
-            hmac-mode            false
+            hmac-mode            disabled
             adaptive-encryption  false
         exit
 

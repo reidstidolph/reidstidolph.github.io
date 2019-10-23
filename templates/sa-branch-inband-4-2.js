@@ -46,10 +46,10 @@ let template = `config
                         vlan                 {{ model.wanVlan1 }}
                         conductor            true
 
-                        neighborhood            WAN1
-                            name    WAN1
-                            topology    spoke
-                            vector    {{ model.wanVector1 }}
+                        neighborhood         WAN1
+                            name                WAN1
+                            topology            spoke
+                            vector              {{ model.wanVector1 }}
                         exit
                         inter-router-security   peer-sec
                         source-nat           true
@@ -73,10 +73,10 @@ let template = `config
                         vlan                 {{ model.wanVlan2 }}
                         conductor            true
 
-                        neighborhood            WAN2
-                            name    WAN2
-                            topology    spoke
-                            vector    {{ model.wanVector2 }}
+                        neighborhood         WAN2
+                            name                WAN2
+                            topology            spoke
+                            vector              {{ model.wanVector2 }}
                         exit
                         inter-router-security   peer-sec
                         source-nat           true

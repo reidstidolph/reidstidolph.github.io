@@ -107,33 +107,33 @@ let template = `config
                     exit
                 exit
 
-                 device-interface         loopback
-                    name                  loopback
-                    type                  host
+                device-interface         loopback
+                    name                 loopback
+                    type                 host
 
-                    network-interface     loopback-mgmt
+                    network-interface    loopback-mgmt
                         name                 loopback-mgmt
-                        default-route                 true
+                        default-route        true
                         tenant               _internal_
 
                         management-vector
-                            name     loopback
-                            priority   ordered
+                            name           loopback
+                            priority       ordered
 
-                        address              {{ model.loGateway }}
-                            ip-address     {{ model.loGateway }}
-                            gateway     {{ model.loAddr }}
-                            prefix-length  31
+                        address            {{ model.loGateway }}
+                            ip-address        {{ model.loGateway }}
+                            gateway           {{ model.loAddr }}
+                            prefix-length     31
                         exit
 
                         ifcfg-option     DNS1
-                            name     DNS1
-                            value   {{ model.DNS1 }}
+                            name            DNS1
+                            value           {{ model.DNS1 }}
                         exit
 
                         ifcfg-option     DNS2
-                            name     DNS2
-                            value   {{ model.DNS2 }}
+                            name            DNS2
+                            value           {{ model.DNS2 }}
                         exit
                     exit
                 exit
@@ -182,24 +182,28 @@ let template = `config
             address               0.0.0.0/0
 
             access-policy         {{ model.lanTenant }}
-                source  {{ model.lanTenant }}
+                source               {{ model.lanTenant }}
             exit
 
-            service-policy        choice1-choice2
+            access-policy         {{ model.lanTenant }}
+                source               _internal_
+            exit
+
+            service-policy        {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
             share-service-routes  false
         exit
 
-        service-policy  WAN1-WAN2-no-failover
-            name                         WAN1-WAN2
+        service-policy  {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
+            name                  {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
 
-            vector                       {{ model.wanVector1 }}
-                name      {{ model.wanVector1 }}
-                priority  ordered
+            vector                {{ model.wanVector1 }}
+                name                 {{ model.wanVector1 }}
+                priority             ordered
             exit
 
-            vector                       {{ model.wanVector2 }}
-                name      {{ model.wanVector2 }}
-                priority  ordered
+            vector                {{ model.wanVector2 }}
+                name                 {{ model.wanVector2 }}
+                priority             ordered
             exit
         exit
     exit
@@ -225,13 +229,13 @@ var model = {
   nodeName: '',
   wanVlan1: '',
   wanPciAddr1: '',
-  wanVector1:”,
+  wanVector1: '',
   wanAddr1: '',
   wanPrefix1: '',
   wanGw1: '',
   wanVlan2: '',
   wanPciAddr2: '',
-  wanVector2:”,
+  wanVector2: '',
   wanAddr2: '',
   wanPrefix2: '',
   wanGw2: '',
@@ -240,8 +244,8 @@ var model = {
   lanAddr: '',
   lanPrefix: '',
   lanTenant: '',
-  loAddress:”,
-  loGateway:”,
-  DNS1:”,
-  DNS2:”,
+  loAddress: '',
+  loGateway: '',
+  DNS1: '',
+  DNS2: '',
 }

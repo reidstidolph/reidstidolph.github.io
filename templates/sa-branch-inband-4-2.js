@@ -119,10 +119,11 @@ let template = `config
                         management-vector
                             name           loopback
                             priority       100
+                        exit
 
                         address            {{ model.loGateway }}
                             ip-address        {{ model.loGateway }}
-                            gateway           {{ model.loAddr }}
+                            gateway           {{ model.loAddress }}
                             prefix-length     31
                         exit
 

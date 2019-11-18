@@ -7,8 +7,7 @@
 #                                                                              #
 ################################################################################
 */
-let template = `config
-BOOTPROTO=none
+let template = `BOOTPROTO=none
 BROWSER_ONLY=no
 DEFROUTE=yes
 DEVICE={{ model.wanInt1}}

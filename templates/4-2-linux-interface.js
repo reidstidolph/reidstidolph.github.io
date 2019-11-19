@@ -10,7 +10,7 @@
 let template = `BOOTPROTO=none
 BROWSER_ONLY=no
 DEFROUTE=yes
-DEVICE={{ model.wanInt1}}
+DEVICE={{ model.wanInt1 }}
 DNS1={{ model.DNS1 }}
 DNS2={{ model.DNS2 }}
 GATEWAY={{ model.wanGw1 }}
@@ -23,7 +23,7 @@ IPV6_DEFROUTE=yes
 IPV6_FAILURE_FATAL=no
 METRIC=100
 MTU=1500
-NAME=enp0s20f3
+NAME={{ model.wanInt1 }}
 NM_CONTROLLED=no
 ONBOOT=yes
 PREFIX={{ model.wanPrefix1 }}

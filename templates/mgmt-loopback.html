@@ -34,7 +34,7 @@
 -->
             <v-text-field label="Router name" v-model="model.routerName" regular></v-text-field>
             <v-text-field label="Node name" v-model="model.nodeName" regular></v-text-field>
-            <v-text-field :rules="[rules.ipv4]" label="Node host address" v-model="model.hostAddr" regular></v-text-field>
+            <v-text-field :rules="[rules.ipv4]" label="Address" v-model="model.hostAddr" regular></v-text-field>
             <v-text-field label="Management Tenant" v-model="model.tenantName" regular></v-text-field>
             <v-text-field label="Host service security policy" v-model="model.securityPolicy" regular></v-text-field>
           <v-container>

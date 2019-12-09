@@ -45,6 +45,11 @@ let template = `config
                             prefix-length  31
                             gateway        {{ model.hostAddr }}
                         exit
+
+                        ifcfg-option       ZONE
+                            name           ZONE
+                            value          trusted
+                        exit
                     exit
                 exit
             exit

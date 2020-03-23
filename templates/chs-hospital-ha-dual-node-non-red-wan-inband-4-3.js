@@ -16,6 +16,7 @@ let template = `config
             name                  {{ model.routerName }}
             location              "{{ model.siteAddress }}"
             location-coordinates  {{ model.siteCoordinates }}
+            router-group          {{ model.routerGroup }}
             inter-node-security   encrypt-hmac-disabled
 
             system
@@ -29,26 +30,40 @@ let template = `config
                         ip-address  {{ model.ntp2 }}
                     exit
                 exit
+
+                services
+
+                    snmp-server
+                        enabled                true
+                        port                   162
+
+                    notification-receiver  {{ model.trapServer1 }} 162 trap
+                        ip-address  {{ model.trapServer1 }}
+                        port        162
+                        type        trap
+                    exit
+                  exit
+               exit
             exit
 
             node                        {{ model.node1Name }}
                 name                    {{ model.node1Name }}
                 role                    combo
 
-                device-interface          WAN1
-                    name                  WAN1
+                device-interface          AVPN1-enp1s0
+                    name                  AVPN1-enp1s0
                     type                  ethernet
                     pci-address           {{ model.wanNode1PciAddr1 }}
 
-                    network-interface     WAN1-vlan{{ model.wanVlan1 }}
-                        name                 WAN1-vlan{{ model.wanVlan1 }}
+                    network-interface     AVPN1-vlan{{ model.wanVlan1 }}
+                        name                 AVPN1-vlan{{ model.wanVlan1 }}
                         global-id            1
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
                         conductor            true
 
-                        neighborhood         WAN1
-                            name                WAN1
+                        neighborhood         {{ model.wanHood1 }}
+                            name                {{ model.wanHood1 }}
                             topology            {{ model.wanTopology1 }}
                             vector              {{ model.wanVector1 }}
                         exit
@@ -361,12 +376,15 @@ var model = {
   routerName: '',
   siteAddress: '',
   siteCoordinates: '',
+  routerGroup: '',
   ntp1: '',
   ntp2: '',
+  trapServer1: '',
   node1Name: '',
   node2Name: '',
   wanVlan1: '',
   wanNode1PciAddr1: '',
+  wanHood1: '',
   wanTopology1: '',
   wanVector1: '',
   wanAddr1: '',

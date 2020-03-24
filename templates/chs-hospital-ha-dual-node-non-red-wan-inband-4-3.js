@@ -177,15 +177,15 @@ let template = `config
                     network-interface    loopback-mgmt
                         name                 loopback-mgmt
                         default-route        true
-                        tenant               _internal_
+                        tenant               ics-mgmt
 
                         management-vector
                             name           loopback
                             priority       100
                         exit
 
-                        address            100.111.1.1
-                            ip-address        100.111.1.1
+                        address            100.111.0.1
+                            ip-address        100.111.0.1
                             gateway           {{ model.node1OSNLoopback }}
                             prefix-length     31
                         exit
@@ -329,15 +329,15 @@ let template = `config
                     network-interface    loopback-mgmt
                         name                 loopback-mgmt
                         default-route        true
-                        tenant               _internal_
+                        tenant               ics-mgmt
 
                         management-vector
                             name           loopback
                             priority       100
                         exit
 
-                        address            100.111.1.1
-                            ip-address        100.111.1.1
+                        address            100.111.0.1
+                            ip-address        100.111.0.1
                             gateway           {{ model.node2OSNLoopback }}
                             prefix-length     20
                         exit

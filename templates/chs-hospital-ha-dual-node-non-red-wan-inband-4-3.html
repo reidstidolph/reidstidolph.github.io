@@ -66,16 +66,20 @@
             <v-text-field label="LAN IP Address" v-model="model.lanAddr" regular></v-text-field>
             <v-text-field label="LAN Prefix" v-model="model.lanPrefix" reagular></v-text-field>
             <v-text-field label="LAN Tenant" v-model="model.lanTenant" regular></v-text-field>
+            <v-text-field label="Voice Tenant" v-model="model.voiceTenant" regular></v-text-field>
             <v-text-field label="Node1 HA Fabric/Dogleg Device PCI Address" v-model="model.fabricNode1PciAddr" regular></v-text-field>
             <v-text-field label="Node2 HA Fabric/Dogleg Device PCI Address" v-model="model.fabricNode2PciAddr" regular></v-text-field>
             <v-text-field label="Node1 HA Sync Device PCI Address" v-model="model.syncNode1PciAddr" regular></v-text-field>
             <v-text-field label="Node2 HA Sync Device PCI Address" v-model="model.syncNode2PciAddr" regular></v-text-field>
+            <v-text-field label="Node1 MSBR Managment IP Address" v-model="model.node1MSBRMgmt" regular></v-text-field>
+            <v-text-field label="Node2 MSBR Managment IP Address" v-model="model.node2MSBRMgmt" regular></v-text-field>
+            <v-text-field label="Node1/Node2 MSBR Voice VLAN" v-model="model.MSBRVoiceVlan" regular></v-text-field>
+            <v-text-field label="Node1/Node2 MSBR Voice IP Address" v-model="model.MSBRVoiceAddr" regular></v-text-field>
+            <v-text-field label="Node1/Node2 MSBR Voice Prefix" v-model="model.MSBRVoicePrefix" regular></v-text-field>
             <v-text-field label="Node1 Loopback Managment IP Address" v-model="model.node1OSNLoopback" regular></v-text-field>
             <v-text-field label="Node2 Loopback Managment IP Address" v-model="model.node2OSNLoopback" regular></v-text-field>
             <v-text-field label="Loopback Managment DNS1" v-model="model.DNS1" regular></v-text-field>
             <v-text-field label="Loopback Managment DNS2" v-model="model.DNS2" regular></v-text-field>
-            <v-text-field label="Node1 MSBR Managment IP Address" v-model="model.node1MSBRMgmt" regular></v-text-field>
-            <v-text-field label="Node1 MSBR Managment IP Address" v-model="model.node2MSBRMgmt" regular></v-text-field>
           <v-container>
         </v-form>
       </v-navigation-drawer>

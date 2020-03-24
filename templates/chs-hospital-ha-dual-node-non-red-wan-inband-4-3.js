@@ -138,6 +138,38 @@ let template = `config
                     exit
                 exit
 
+                device-interface       msbr-enp5s0
+                    name               msbr-enp5s0
+                    description        "Internal interface between OSN and MSBR"
+                    type               ethernet
+                    pci-address        0000:05:00.0
+
+                    network-interface  msbr-mgmt
+                        name               ha-fabric
+                        type               external
+                        vlan               128
+                        tenant             ics-mgmt
+                        source-nat         true
+
+                        address            100.11.15.254
+                            ip-address     100.11.15.254
+                            prefix-length  20
+                        exit
+                    exit
+
+                    network-interface     msbr-vlan{{ model.MSBRVoiceVlan }}
+                        name                 LAN-vlan{{ model.MSBRVoiceVlan }}
+                        type                 external
+                        vlan                 {{ model.MSBRVoiceVlan }}
+                        tenant               {{ model.voiceTenant }}
+
+                        address              {{ model.MSBRVoiceAddr }}
+                            ip-address     {{ model.MSBRVoiceAddr }}
+                            prefix-length  {{ model.MSBRVoicePrefix }}
+                        exit
+                    exit
+                exit
+
                 device-interface         loopback
                     name                 loopback
                     type                 host
@@ -254,6 +286,38 @@ let template = `config
                         address            169.254.253.2
                             ip-address     169.254.253.2
                             prefix-length  30
+                        exit
+                    exit
+                exit
+
+                device-interface       msbr-enp5s0
+                    name               msbr-enp5s0
+                    description        "Internal interface between OSN and MSBR"
+                    type               ethernet
+                    pci-address        0000:05:00.0
+
+                    network-interface  msbr-mgmt
+                        name               ha-fabric
+                        type               external
+                        vlan               128
+                        tenant             ics-mgmt
+                        source-nat         true
+
+                        address            100.11.15.254
+                            ip-address     100.11.15.254
+                            prefix-length  20
+                        exit
+                    exit
+
+                    network-interface     msbr-vlan{{ model.MSBRVoiceVlan }}
+                        name                 LAN-vlan{{ model.MSBRVoiceVlan }}
+                        type                 external
+                        vlan                 {{ model.MSBRVoiceVlan }}
+                        tenant               {{ model.voiceTenant }}
+
+                        address              {{ model.MSBRVoiceAddr }}
+                            ip-address     {{ model.MSBRVoiceAddr }}
+                            prefix-length  {{ model.MSBRVoicePrefix }}
                         exit
                     exit
                 exit
@@ -470,12 +534,16 @@ var model = {
   lanAddr: '',
   lanPrefix: '',
   lanTenant: '',
+  voiceTenant: '',
   fabricNode1PciAddr: '',
   fabricNode2PciAddr: '',
   syncNode1PciAddr: '',
   syncNode2PciAddr: '',
   node1OSNLoopback: '',
   node2OSNLoopback: '',
+  MSBRVoiceVlan: '',
+  MSBRVoiceAddr: '',
+  MSBRVoicePrefix: '',
   DNS1: '',
   DNS2: '',
   node1MSBRMgmt: '',

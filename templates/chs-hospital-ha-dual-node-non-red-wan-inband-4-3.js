@@ -175,8 +175,8 @@ let template = `config
                 name                    {{ model.node2Name }}
                 role                    combo
 
-                device-interface          WAN2
-                    name                  WAN2
+                device-interface          ADI-enp1s0
+                    name                  ADI-enp1s0
                     type                  ethernet
                     pci-address           {{ model.wanNode2PciAddr2 }}
 
@@ -187,8 +187,8 @@ let template = `config
                         vlan                 {{ model.wanVlan2 }}
                         conductor            true
 
-                        neighborhood         WAN2
-                            name                WAN2
+                        neighborhood         {{ model.wanHood2 }}
+                            name                {{ model.wanHood2 }}
                             topology            {{ model.wanTopology2 }}
                             vector              {{ model.wanVector2 }}
                         exit
@@ -392,6 +392,7 @@ var model = {
   wanGw1: '',
   wanVlan2: '',
   wanNode2PciAddr2: '',
+  wanHood2: '',
   wanTopology2: '',
   wanVector2: '',
   wanAddr2: '',

@@ -404,6 +404,18 @@ let template = `config
             adaptive-encryption  false
         exit
 
+        tenant  {{ model.lanTenant }}
+            name      {{ model.lanTenant }}
+        exit
+
+        tenant  {{ model.voiceTenant }}
+            name      {{ model.voiceTenant }}
+        exit
+
+        tenant  {{ model.guestTenant }}
+            name      {{ model.guestTenant }}
+        exit
+
         service  {{ model.node1Name }}-osn-mgmt
             name           {{ model.node1Name }}-osn-mgmt
 

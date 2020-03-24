@@ -78,8 +78,8 @@ let template = `config
                     exit
                  exit
 
-                 device-interface         LAN
-                    name                  LAN
+                 device-interface         LAN-enp2s0
+                    name                  LAN-enp2s0
                     type                  ethernet
                     pci-address           {{ model.lanNode1PciAddr }}
                     shared-phys-address   {{ model.lanSharedMAC }}
@@ -98,8 +98,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface            ha-fabric
-                    name               ha-fabric
+                device-interface            fabric-enp3s0
+                    name               fabric-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
                     pci-address        {{ model.fabricNode1PciAddr }}
@@ -115,8 +115,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface            ha-sync
-                    name               ha-sync
+                device-interface            sync-enp4s0
+                    name               sync-enp4s0
                     description        "HA state synchronization link"
                     type               ethernet
                     pci-address        {{ model.syncNode1PciAddr }}
@@ -203,8 +203,8 @@ let template = `config
                     exit
                  exit
 
-                 device-interface         LAN
-                    name                  LAN
+                 device-interface         LAN-enp2s0
+                    name                  LAN-enp2s0
                     type                  ethernet
                     pci-address           {{ model.lanNode2PciAddr }}
                     shared-phys-address   {{ model.lanSharedMAC }}
@@ -223,8 +223,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface            ha-fabric
-                    name               ha-fabric
+                device-interface            fabric-enp3s0
+                    name               fabric-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
                     pci-address        {{ model.fabricNode2PciAddr }}
@@ -240,8 +240,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface            ha-sync
-                    name               ha-sync
+                device-interface            sync-enp4s0
+                    name               sync-enp4s0
                     description        "HA state synchronization link"
                     type               ethernet
                     pci-address        {{ model.syncNode2PciAddr }}
@@ -290,6 +290,46 @@ let template = `config
                     exit
                 exit
             exit
+
+            service-route     static-{{ model.node1Name }}-osn-mgmt
+                name          static-{{ model.node1Name }}-osn-mgmt
+                service-name  {{ model.node1Name }}-osn-mgmt
+
+                next-hop      {{ model.node1Name }} loopback-mgmt
+                        node-name  {{ model.node1Name }}
+                        interface  loopback-mgmt
+                exit
+            exit
+
+            service-route     static-{{ model.node2Name }}-osn-mgmt
+                name          static-{{ model.node2Name }}-osn-mgmt
+                service-name  {{ model.node2Name }}-osn-mgmt
+
+                next-hop      {{ model.node2Name }} loopback-mgmt
+                        node-name  {{ model.node2Name }}
+                        interface  loopback-mgmt
+                exit
+            exit
+
+            service-route     static-{{ model.node1Name }}-msbr-mgmt
+                name          static-{{ model.node1Name }}-msbr-mgmt
+                service-name  {{ model.node1Name }}-msbr-mgmt
+
+                next-hop      {{ model.node1Name }} msbr-mgmt
+                        node-name  {{ model.node1Name }}
+                        interface  msbr-mgmt
+                exit
+            exit
+
+            service-route     static-{{ model.node2Name }}-msbr-mgmt
+                name          static-{{ model.node2Name }}-msbr-mgmt
+                service-name  {{ model.node2Name }}-msbr-mgmt
+
+                next-hop      {{ model.node2Name }} msbr-mgmt
+                        node-name  {{ model.node2Name }}
+                        interface  msbr-mgmt
+                exit
+            exit
         exit
 
         security  encrypt-hmac-disabled
@@ -298,10 +338,6 @@ let template = `config
             encrypt              false
             hmac-mode            disabled
             adaptive-encryption  false
-        exit
-
-        tenant  {{ model.lanTenant }}
-            name      {{ model.lanTenant }}
         exit
 
         service  {{ model.node1Name }}-osn-mgmt

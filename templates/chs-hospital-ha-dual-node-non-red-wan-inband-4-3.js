@@ -151,8 +151,8 @@ let template = `config
                         tenant             ics-mgmt
                         source-nat         true
 
-                        address            100.11.15.254
-                            ip-address     100.11.15.254
+                        address            100.111.15.254
+                            ip-address     100.111.15.254
                             prefix-length  20
                         exit
                     exit
@@ -303,8 +303,8 @@ let template = `config
                         tenant             ics-mgmt
                         source-nat         true
 
-                        address            100.11.15.254
-                            ip-address     100.11.15.254
+                        address            100.111.15.254
+                            ip-address     100.111.15.254
                             prefix-length  20
                         exit
                     exit

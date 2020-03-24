@@ -37,13 +37,13 @@ let template = `config
                         enabled                true
                         port                   162
 
-                    notification-receiver  {{ model.trapServer1 }} 162 trap
-                        ip-address  {{ model.trapServer1 }}
-                        port        162
-                        type        trap
+                        notification-receiver  {{ model.trapServer1 }} 162 trap
+                            ip-address  {{ model.trapServer1 }}
+                            port        162
+                            type        trap
+                        exit
                     exit
-                  exit
-               exit
+                exit
             exit
 
             node                        {{ model.node1Name }}

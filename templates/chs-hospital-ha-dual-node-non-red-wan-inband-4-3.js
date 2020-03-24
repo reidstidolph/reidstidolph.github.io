@@ -304,21 +304,88 @@ let template = `config
             name      {{ model.lanTenant }}
         exit
 
-        service  internet
-            name                  internet
-            scope                 private
-            security              encrypt-hmac-disabled
-            address               0.0.0.0/0
+        service  {{ model.node1Name }}-osn-mgmt
+            name           {{ model.node1Name }}-osn-mgmt
 
-            access-policy         {{ model.lanTenant }}
-                source               {{ model.lanTenant }}
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
             exit
 
-            access-policy         {{ model.lanTenant }}
-                source               _internal_
+            applies-to      router-group
+                type        router-group
+                group-name  nds-dc
+            exit
+            security       internal
+            address        {{ model.node1OSNLoopback }}
+
+            access-policy  ics-mgmt
+                source      ics-mgmt
+                permission  allow
+            exit
+        exit
+
+        service  {{ model.node2Name }}-osn-mgmt
+            name           {{ model.node2Name }}-osn-mgmt
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
             exit
 
-            service-policy        {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
+            applies-to      router-group
+                type        router-group
+                group-name  nds-dc
+            exit
+            security       internal
+            address        {{ model.node2OSNLoopback }}
+
+            access-policy  ics-mgmt
+                source      ics-mgmt
+                permission  allow
+            exit
+        exit
+
+        service  {{ model.node1Name }}-msbr-mgmt
+            name           {{ model.node1Name }}-msbr-mgmt
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
+            exit
+
+            applies-to      router-group
+                type        router-group
+                group-name  nds-dc
+            exit
+            security       internal
+            address        {{ model.node1MSBRMgmt }}
+
+            access-policy  ics-mgmt
+                source      ics-mgmt
+                permission  allow
+            exit
+        exit
+
+        service  {{ model.node2Name }}-msbr-mgmt
+            name           {{ model.node2Name }}-msbr-mgmt
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
+            exit
+
+            applies-to      router-group
+                type        router-group
+                group-name  nds-dc
+            exit
+            security       internal
+            address        {{ model.node2MSBRMgmt }}
+
+            access-policy  ics-mgmt
+                source      ics-mgmt
+                permission  allow
+            exit
         exit
     exit
 exit`
@@ -375,4 +442,6 @@ var model = {
   node2OSNLoopback: '',
   DNS1: '',
   DNS2: '',
+  node1MSBRMgmt: '',
+  node2MSBRMgmt: '',
 }

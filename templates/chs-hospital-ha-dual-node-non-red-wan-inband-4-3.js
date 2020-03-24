@@ -67,7 +67,7 @@ let template = `config
                             topology            {{ model.wanTopology1 }}
                             vector              {{ model.wanVector1 }}
                         exit
-                        inter-router-security   peer-sec
+                        inter-router-security   internal
                         source-nat           true
 
                         address              {{ model.wanAddr1 }}
@@ -152,9 +152,9 @@ let template = `config
                             priority       100
                         exit
 
-                        address            {{ model.loGateway }}
-                            ip-address        {{ model.loGateway }}
-                            gateway           {{ model.loAddress }}
+                        address            100.111.1.1
+                            ip-address        100.111.1.1
+                            gateway           {{ model.node1OSNLoopback }}
                             prefix-length     31
                         exit
 
@@ -192,7 +192,7 @@ let template = `config
                             topology            {{ model.wanTopology2 }}
                             vector              {{ model.wanVector2 }}
                         exit
-                        inter-router-security   peer-sec
+                        inter-router-security   internal
                         source-nat           true
 
                         address              {{ model.wanAddr2 }}
@@ -272,10 +272,10 @@ let template = `config
                             priority       100
                         exit
 
-                        address            {{ model.loAddress }}
-                            ip-address        {{ model.loAddress }}
-                            gateway           {{ model.loGateway }}
-                            prefix-length     31
+                        address            100.111.1.1
+                            ip-address        100.111.1.1
+                            gateway           {{ model.node2OSNLoopback }}
+                            prefix-length     20
                         exit
 
                         ifcfg-option     DNS1
@@ -290,29 +290,6 @@ let template = `config
                     exit
                 exit
             exit
-
-            service-route               static-internet-route
-                name          static-internet-route
-                service-name  internet
-
-                next-hop      {{ model.node1Name }} WAN1-vlan{{ model.wanVlan1 }}
-                    node-name  {{ model.node1Name }}
-                    interface  WAN1-vlan{{ model.wanVlan1 }}
-                    gateway-ip  {{ model.wanGw1 }}
-                exit
-
-                next-hop      {{ model.node2Name }} WAN2-vlan{{ model.wanVlan2 }}
-                    node-name  {{ model.node2Name }}
-                    interface  WAN2-vlan{{ model.wanVlan2 }}
-                    gateway-ip  {{ model.wanGw2 }}
-                exit
-            exit
-        exit
-
-        security  peer-sec
-            name                 peer-sec
-            description          "Router peer security policy"
-            encryption-cipher    aes-cbc-256
         exit
 
         security  encrypt-hmac-disabled
@@ -342,21 +319,6 @@ let template = `config
             exit
 
             service-policy        {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
-            share-service-routes  false
-        exit
-
-        service-policy  {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
-            name                  {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
-
-            vector                {{ model.wanVector1 }}
-                name                 {{ model.wanVector1 }}
-                priority             ordered
-            exit
-
-            vector                {{ model.wanVector2 }}
-                name                 {{ model.wanVector2 }}
-                priority             ordered
-            exit
         exit
     exit
 exit`
@@ -409,8 +371,8 @@ var model = {
   fabricNode2PciAddr: '',
   syncNode1PciAddr: '',
   syncNode2PciAddr: '',
-  loAddress: '',
-  loGateway: '',
+  node1OSNLoopback: '',
+  node2OSNLoopback: '',
   DNS1: '',
   DNS2: '',
 }

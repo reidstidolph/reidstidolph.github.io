@@ -145,7 +145,7 @@ let template = `config
                     pci-address        0000:05:00.0
 
                     network-interface  msbr-mgmt
-                        name               ha-fabric
+                        name               msbr-mgmt
                         type               external
                         vlan               128
                         tenant             ics-mgmt
@@ -297,7 +297,7 @@ let template = `config
                     pci-address        0000:05:00.0
 
                     network-interface  msbr-mgmt
-                        name               ha-fabric
+                        name               msbr-mgmt
                         type               external
                         vlan               128
                         tenant             ics-mgmt

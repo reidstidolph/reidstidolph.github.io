@@ -464,8 +464,8 @@ let template = `config
             name      {{ model.voiceTenant }}
         exit
 
-        tenant  {{ model.guestTenant }}
-            name      {{ model.guestTenant }}
+        tenant  chs-guest
+            name      chs-guest
         exit
 
         service  {{ model.node1Name }}-osn-mgmt

@@ -60,12 +60,11 @@ let template = `config
                         global-id            1
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
-                        conductor            true
 
-                        neighborhood         {{ model.wanHood1 }}
-                            name                {{ model.wanHood1 }}
-                            topology            {{ model.wanTopology1 }}
-                            vector              {{ model.wanVector1 }}
+                        neighborhood         DC-MPLS
+                            name                DC-MPLS
+                            topology            spoke
+                            vector              MPLS-01
                         exit
                         inter-router-security   internal
                         source-nat           true
@@ -94,6 +93,19 @@ let template = `config
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}
                             prefix-length  {{ model.lanPrefix }}
+                        exit
+                    exit
+
+                    network-interface     LAN-vlan2030
+                        name                 LAN-vlanvlan2030
+                        global-id            4
+                        type                 external
+                        vlan                 2030
+                        tenant               chs-guest
+
+                        address              192.168.0.1
+                            ip-address     192.168.0.1
+                            prefix-length  18
                         exit
                     exit
                 exit
@@ -212,17 +224,23 @@ let template = `config
                     type                  ethernet
                     pci-address           {{ model.wanNode2PciAddr2 }}
 
-                    network-interface     WAN2-vlan{{ model.wanVlan2 }}
-                        name                 WAN2-vlan{{ model.wanVlan2 }}
+                    network-interface     ADI-vlan{{ model.wanVlan2 }}
+                        name                 ADI-vlan{{ model.wanVlan2 }}
                         global-id            2
                         type                 external
                         vlan                 {{ model.wanVlan2 }}
                         conductor            true
 
-                        neighborhood         {{ model.wanHood2 }}
-                            name                {{ model.wanHood2 }}
-                            topology            {{ model.wanTopology2 }}
-                            vector              {{ model.wanVector2 }}
+                        neighborhood         DC-Internet-Broadband
+                            name                DC-Internet-Broadband
+                            topology            spoke
+                            vector              Broadband-01
+                        exit
+
+                        neighborhood         CRWD-Internet-Broadband
+                            name                CRWD-Internet-Broadband
+                            topology            hub
+                            vector              Broadband-01
                         exit
                         inter-router-security   internal
                         source-nat           true
@@ -251,6 +269,19 @@ let template = `config
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}
                             prefix-length  {{ model.lanPrefix }}
+                        exit
+                    exit
+
+                    network-interface     LAN-vlan2030
+                        name                 LAN-vlanvlan2030
+                        global-id            4
+                        type                 external
+                        vlan                 2030
+                        tenant               chs-guest
+
+                        address              192.168.0.1
+                            ip-address     192.168.0.1
+                            prefix-length  18
                         exit
                     exit
                 exit
@@ -393,6 +424,27 @@ let template = `config
                         node-name  {{ model.node2Name }}
                         interface  msbr-mgmt
                 exit
+
+            service-route     static-guest-wifi
+               name          static-guest-wifi
+                service-name  guest-wifi
+
+                next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+                        node-name  {{ model.node2Name }}
+                        interface  ADI-vlan{{ model.wanVlan2 }}
+                        gateway-ip {{ model.wanGw2 }}
+                exit
+            exit
+
+            service-route     static-router-internet
+               name          static-router-internet
+                service-name  router-internet
+
+                next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+                        node-name  {{ model.node2Name }}
+                        interface  ADI-vlan{{ model.wanVlan2 }}
+                        gateway-ip {{ model.wanGw2 }}
+                exit
             exit
         exit
 
@@ -499,6 +551,40 @@ let template = `config
                 permission  allow
             exit
         exit
+
+        service  guest-wifi
+            name           guest-wifi
+
+            applies-to      router-group
+                type        router-group
+                group-name  clinics
+                group-name  hospitals
+            exit
+            security       internal
+            address        0.0.0.0/0
+
+            access-policy  chs-guest
+                source      chs-guest
+                permission  allow
+            exit
+        exit
+
+        service  router-internet
+            name           router-internet
+
+            applies-to      router-group
+                type        router-group
+                group-name  clinics
+                group-name  hospitals
+            exit
+            security       internal
+            address        0.0.0.0/0
+
+            access-policy  ics-mgmt
+                source      ics-mgmt
+                permission  allow
+            exit
+        exit
     exit
 exit`
 
@@ -525,17 +611,11 @@ var model = {
   node2Name: '',
   wanVlan1: '',
   wanNode1PciAddr1: '',
-  wanHood1: '',
-  wanTopology1: '',
-  wanVector1: '',
   wanAddr1: '',
   wanPrefix1: '',
   wanGw1: '',
   wanVlan2: '',
   wanNode2PciAddr2: '',
-  wanHood2: '',
-  wanTopology2: '',
-  wanVector2: '',
   wanAddr2: '',
   wanPrefix2: '',
   wanGw2: '',

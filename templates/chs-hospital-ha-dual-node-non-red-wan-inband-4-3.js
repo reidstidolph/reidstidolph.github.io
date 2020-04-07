@@ -9,8 +9,6 @@
 */
 let template = `config
     authority
-        name               {{ model.authorityName }}
-        conductor-address  {{ model.conductorAddr1 }}
 
         router       {{ model.routerName }}
             name                  {{ model.routerName }}
@@ -57,7 +55,6 @@ let template = `config
 
                     network-interface     AVPN1-vlan{{ model.wanVlan1 }}
                         name                 AVPN1-vlan{{ model.wanVlan1 }}
-                        global-id            1
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
 
@@ -226,7 +223,6 @@ let template = `config
 
                     network-interface     ADI-vlan{{ model.wanVlan2 }}
                         name                 ADI-vlan{{ model.wanVlan2 }}
-                        global-id            2
                         type                 external
                         vlan                 {{ model.wanVlan2 }}
                         conductor            true
@@ -350,6 +346,44 @@ let template = `config
                             ip-address     {{ model.MSBRVoiceAddr }}
                             prefix-length  {{ model.MSBRVoicePrefix }}
                         exit
+                    exit
+                exit
+
+                device-interface  LTE-ATT
+                    name               LTE-ATT
+                    type               lte
+                    target-interface   <>
+
+                    lte
+                        apn-name  {{ model.LTEnode2APN }}
+                    exit
+
+                    network-interface  lte-dhcp
+                        name                   lte-dhcp
+
+                        neighborhood           <>
+                            name                <>
+                            peer-connectivity   outbound-only
+                            vector              <>
+
+                            bfd
+                                state                     enabled
+                                desired-tx-interval       60000
+                                required-min-rx-interval  60000
+                                link-test-interval        120
+                            exit
+
+                            udp-transform
+                                mode  always-transform
+                            exit
+
+                            path-mtu-discovery
+                                enabled  true
+                            exit
+                        exit
+                        inter-router-security  internal
+                        source-nat             true
+                        dhcp                   v4
                     exit
                 exit
 
@@ -567,6 +601,7 @@ let template = `config
                 source      chs-guest
                 permission  allow
             exit
+            share-service-routes  false
         exit
 
         service  router-internet
@@ -584,6 +619,7 @@ let template = `config
                 source      ics-mgmt
                 permission  allow
             exit
+            share-service-routes  false
         exit
     exit
 exit`
@@ -631,6 +667,7 @@ var model = {
   fabricNode2PciAddr: '',
   syncNode1PciAddr: '',
   syncNode2PciAddr: '',
+  LTEnode2APN: '',
   node1OSNLoopback: '',
   node2OSNLoopback: '',
   MSBRVoiceVlan: '',

@@ -85,7 +85,14 @@ let template = `config
                         global-id            3
                         type                 external
                         vlan                 {{ model.lanVlan }}
-                        tenant               {{ model.lanTenant }}
+                        neighborhood         {{ model.routerName }}-lan1
+                            name  {{ model.routerName }}-lan1
+                        exit
+
+                        neighborhood         {{ model.routerName }}-lan2
+                            name  {{ model.routerName }}-lan1
+                        exit
+                        inter-router-security  peer-sec
 
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}
@@ -260,7 +267,14 @@ let template = `config
                         global-id            3
                         type                 external
                         vlan                 {{ model.lanVlan }}
-                        tenant               {{ model.lanTenant }}
+                        neighborhood         {{ model.routerName }}-lan1
+                            name  {{ model.routerName }}-lan1
+                        exit
+
+                        neighborhood         {{ model.routerName }}-lan2
+                            name  {{ model.routerName }}-lan1
+                        exit
+                        inter-router-security  peer-sec
 
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}
@@ -461,24 +475,24 @@ let template = `config
 
             service-route     static-guest-wifi
                name          static-guest-wifi
-                service-name  guest-wifi
+               service-name  guest-wifi
 
-                next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
                         node-name  {{ model.node2Name }}
                         interface  ADI-vlan{{ model.wanVlan2 }}
                         gateway-ip {{ model.wanGw2 }}
-                exit
+               exit
             exit
 
             service-route     static-router-internet
                name          static-router-internet
-                service-name  router-internet
+               service-name  router-internet
 
-                next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
                         node-name  {{ model.node2Name }}
                         interface  ADI-vlan{{ model.wanVlan2 }}
                         gateway-ip {{ model.wanGw2 }}
-                exit
+               exit
             exit
         exit
 
@@ -492,6 +506,15 @@ let template = `config
 
         tenant  {{ model.lanTenant }}
             name      {{ model.lanTenant }}
+
+            member  {{ model.routerName }}-lan1
+                neighborhood  {{ model.routerName }}-lan1
+                address       192.168.1.10/32
+            exit
+            member  {{ model.routerName }}-lan2
+                neighborhood  {{ model.routerName }}-lan2
+                address       192.168.1.10/32
+            exit
         exit
 
         tenant  {{ model.voiceTenant }}
@@ -662,6 +685,8 @@ var model = {
   lanAddr: '',
   lanPrefix: '',
   lanTenant: '',
+  dataIPBlock1: '',
+  dataIPBlock2: '',
   voiceTenant: '',
   fabricNode1PciAddr: '',
   fabricNode2PciAddr: '',

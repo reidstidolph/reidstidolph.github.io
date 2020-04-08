@@ -90,7 +90,7 @@ let template = `config
                         exit
 
                         neighborhood         {{ model.routerName }}-lan2
-                            name  {{ model.routerName }}-lan1
+                            name  {{ model.routerName }}-lan2
                         exit
                         inter-router-security  peer-sec
 
@@ -272,7 +272,7 @@ let template = `config
                         exit
 
                         neighborhood         {{ model.routerName }}-lan2
-                            name  {{ model.routerName }}-lan1
+                            name  {{ model.routerName }}-lan2
                         exit
                         inter-router-security  peer-sec
 
@@ -509,11 +509,11 @@ let template = `config
 
             member  {{ model.routerName }}-lan1
                 neighborhood  {{ model.routerName }}-lan1
-                address       192.168.1.10/32
+                address       {{ model.dataIPBlock1 }}
             exit
             member  {{ model.routerName }}-lan2
                 neighborhood  {{ model.routerName }}-lan2
-                address       192.168.1.10/32
+                address       {{ model.dataIPBlock2 }}
             exit
         exit
 

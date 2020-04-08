@@ -352,7 +352,7 @@ let template = `config
                 device-interface  LTE-ATT
                     name               LTE-ATT
                     type               lte
-                    target-interface   <>
+                    target-interface   wwp0s21f0u4i4
 
                     lte
                         apn-name  {{ model.LTEnode2APN }}
@@ -361,10 +361,10 @@ let template = `config
                     network-interface  lte-dhcp
                         name                   lte-dhcp
 
-                        neighborhood           <>
-                            name                <>
+                        neighborhood           DC-Internet-LTE
+                            name                DC-Internet-LTE
                             peer-connectivity   outbound-only
-                            vector              <>
+                            vector              LTE
 
                             bfd
                                 state                     enabled

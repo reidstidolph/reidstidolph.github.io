@@ -575,7 +575,6 @@ let template = `config
             applies-to      router-group
                 type        router-group
                 group-name  bdc
-                group-name  hospitals
             exit
             security       service-sec
             address        {{ model.dataIPBlock1 }}

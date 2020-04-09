@@ -543,14 +543,6 @@ let template = `config
             exit
         exit
 
-        security  encrypt-hmac-disabled
-            name                 encrypt-hmac-disabled
-            description          "Encryption and message authentication disabled"
-            encrypt              false
-            hmac-mode            disabled
-            adaptive-encryption  false
-        exit
-
         tenant  hospitals.chs-site
             name      hospitals.chs-site
 
@@ -590,24 +582,6 @@ let template = `config
                 permission  allow
             exit
             service-policy  Business-Data-MPLS
-        exit
-
-        service  guest-wifi
-            name           guest-wifi
-
-            applies-to      router-group
-                type        router-group
-                group-name  clinics
-                group-name  hospitals
-            exit
-            security       encrypt-hmac-disabled
-            address        0.0.0.0/0
-
-            access-policy  chs-guest
-                source      chs-guest
-                permission  allow
-            exit
-            share-service-routes  false
         exit
 
         service  chs-internet
@@ -712,38 +686,6 @@ let template = `config
                 permission  allow
             exit
         exit
-
-        service  router-internet
-            name           router-internet
-
-            applies-to      router-group
-                type        router-group
-                group-name  clinics
-                group-name  hospitals
-            exit
-            security       encrypt-hmac-disabled
-            address        0.0.0.0/0
-
-            access-policy  ics-mgmt
-                source      ics-mgmt
-                permission  allow
-            exit
-            share-service-routes  false
-        exit
-
-        service  ics-noc-tools
-            name           ics-noc-tools
-
-            security       service-sec
-            address        216.88.36.160/28
-            address        192.43.154.128/26
-
-            access-policy  ics-mgmt
-                source      ics-mgmt
-                permission  allow
-            exit
-            share-service-routes  false
-        exit
     exit
 exit`
 
@@ -774,6 +716,7 @@ var model = {
   lanSharedMAC: '',
   lanAddr: '',
   lanPrefix: '',
+  lanGw: '',
   dataIPBlock1: '',
   dataIPBlock2: '',
   prismaIPtunnelIP: '',

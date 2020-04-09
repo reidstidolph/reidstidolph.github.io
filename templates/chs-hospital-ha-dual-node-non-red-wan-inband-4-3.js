@@ -14,7 +14,7 @@ let template = `config
             name                  {{ model.routerName }}
             location              "{{ model.siteAddress }}"
             location-coordinates  {{ model.siteCoordinates }}
-            router-group          {{ model.routerGroup }}
+            router-group          hospitals
             inter-node-security   encrypt-hmac-disabled
 
             system
@@ -177,7 +177,7 @@ let template = `config
                         name                 LAN-vlan{{ model.MSBRVoiceVlan }}
                         type                 external
                         vlan                 {{ model.MSBRVoiceVlan }}
-                        tenant               {{ model.voiceTenant }}
+                        tenant               voice.chs-site
 
                         address              {{ model.MSBRVoiceAddr }}
                             ip-address     {{ model.MSBRVoiceAddr }}
@@ -235,6 +235,12 @@ let template = `config
 
                         neighborhood         DC-Internet-Broadband
                             name                DC-Internet-Broadband
+                            topology            spoke
+                            vector              Broadband-01
+                        exit
+
+                        neighborhood         ICS-NOC-Broadband
+                            name                ICS-NOC-Broadband
                             topology            spoke
                             vector              Broadband-01
                         exit
@@ -353,7 +359,7 @@ let template = `config
                         name                 LAN-vlan{{ model.MSBRVoiceVlan }}
                         type                 external
                         vlan                 {{ model.MSBRVoiceVlan }}
-                        tenant               {{ model.voiceTenant }}
+                        tenant               voice.chs-site
 
                         address              {{ model.MSBRVoiceAddr }}
                             ip-address     {{ model.MSBRVoiceAddr }}
@@ -433,6 +439,32 @@ let template = `config
                 exit
             exit
 
+            service-route     local-{{ model.routerName }}-LAN-summary
+                name          local-{{ model.routerName }}-LAN-summary
+                service-name  {{ model.routerName }}-LAN-summary
+
+                next-hop      {{ model.node1Name }} LAN-vlan2020
+                        node-name  {{ model.node1Name }}
+                        interface  LAN-vlan2020
+                exit
+
+                next-hop      {{ model.node2Name }} LAN-vlan2020
+                        node-name  {{ model.node1Name }}
+                        interface  LAN-vlan2020
+                exit
+            exit
+
+            service-route     static-guest-wifi
+               name          static-guest-wifi
+               service-name  guest-wifi
+
+               next-hop      {{ model.node2Name }} ADI-vlan0
+                        node-name  {{ model.node2Name }}
+                        interface  ADI-vlan0
+                        gateway-ip {{ model.wanGw2 }}
+               exit
+            exit
+
             service-route     static-{{ model.node1Name }}-osn-mgmt
                 name          static-{{ model.node1Name }}-osn-mgmt
                 service-name  {{ model.node1Name }}-osn-mgmt
@@ -471,16 +503,6 @@ let template = `config
                         node-name  {{ model.node2Name }}
                         interface  msbr-mgmt
                 exit
-
-            service-route     static-guest-wifi
-               name          static-guest-wifi
-               service-name  guest-wifi
-
-               next-hop      {{ model.node2Name }} ADI-vlan0
-                        node-name  {{ model.node2Name }}
-                        interface  ADI-vlan0
-                        gateway-ip {{ model.wanGw2 }}
-               exit
             exit
 
             service-route     static-router-internet
@@ -493,6 +515,32 @@ let template = `config
                         gateway-ip {{ model.wanGw2 }}
                exit
             exit
+
+            service-route    static-ics-noc-tools-md
+               name          static-ics-noc-tools-md
+               service-name  ics-noc-tools
+               peer          CHSSDWHAMD
+               service-route-policy  sessions-first
+            exit
+
+            service-route    static-ics-noc-tools-chi
+               name          static-ics-noc-tools-chi
+               service-name  ics-noc-tools
+               peer          CHSSDWHACHI
+               service-route-policy  sessions-second
+            exit
+
+            service-route-policy  sessions-first
+               name          sessions-first
+               description   "Highest Priority Path"
+               max-sessions  1000000000
+            exit
+
+            service-route-policy  sessions-second
+               name          sessions-second
+               description   "Second Priority Path"
+               max-sessions  100000000
+            exit
         exit
 
         security  encrypt-hmac-disabled
@@ -503,8 +551,8 @@ let template = `config
             adaptive-encryption  false
         exit
 
-        tenant  {{ model.lanTenant }}
-            name      {{ model.lanTenant }}
+        tenant  hospitals.chs-site
+            name      hospitals.chs-site
 
             member  {{ model.routerName }}-lan1
                 neighborhood  {{ model.routerName }}-lan1
@@ -516,12 +564,69 @@ let template = `config
             exit
         exit
 
-        tenant  {{ model.voiceTenant }}
-            name      {{ model.voiceTenant }}
+        service  {{ model.routerName }}-LAN-summary
+            name           {{ model.routerName }}-LAN-summary
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
+            exit
+
+            applies-to      router-group
+                type        router-group
+                group-name  bdc
+                group-name  hospitals
+            exit
+            security       service-sec
+            address        {{ model.dataIPBlock1 }}
+            address        {{ model.dataIPBlock2 }}
+
+            access-policy   chs-dc
+                source      chs-dc
+                permission  allow
+            exit
+
+            access-policy   chs-site
+                source      chs-site
+                permission  allow
+            exit
         exit
 
-        tenant  chs-guest
-            name      chs-guest
+        service  guest-wifi
+            name           guest-wifi
+
+            applies-to      router-group
+                type        router-group
+                group-name  clinics
+                group-name  hospitals
+            exit
+            security       encrypt-hmac-disabled
+            address        0.0.0.0/0
+
+            access-policy  chs-guest
+                source      chs-guest
+                permission  allow
+            exit
+            share-service-routes  false
+        exit
+
+        service  chs-internet
+            name           chs-internet
+
+            applies-to      router-group
+                type        router-group
+                group-name  clinics
+                group-name  hospitals
+                group-name  bdc
+            exit
+            security       encrypt-hmac-disabled
+            address        0.0.0.0/0
+
+            access-policy  chs-site
+                source      chs-site
+                permission  allow
+            exit
+            share-service-routes  false
         exit
 
         service  {{ model.node1Name }}-osn-mgmt
@@ -608,24 +713,6 @@ let template = `config
             exit
         exit
 
-        service  guest-wifi
-            name           guest-wifi
-
-            applies-to      router-group
-                type        router-group
-                group-name  clinics
-                group-name  hospitals
-            exit
-            security       encrypt-hmac-disabled
-            address        0.0.0.0/0
-
-            access-policy  chs-guest
-                source      chs-guest
-                permission  allow
-            exit
-            share-service-routes  false
-        exit
-
         service  router-internet
             name           router-internet
 
@@ -636,6 +723,20 @@ let template = `config
             exit
             security       encrypt-hmac-disabled
             address        0.0.0.0/0
+
+            access-policy  ics-mgmt
+                source      ics-mgmt
+                permission  allow
+            exit
+            share-service-routes  false
+        exit
+
+        service  ics-noc-tools
+            name           ics-noc-tools
+
+            security       service-sec
+            address        216.88.36.160/28
+            address        192.43.154.128/26
 
             access-policy  ics-mgmt
                 source      ics-mgmt
@@ -659,7 +760,6 @@ var model = {
   routerName: '',
   siteAddress: '',
   siteCoordinates: '',
-  routerGroup: '',
   ntp1: '',
   ntp2: '',
   trapServer1: '',
@@ -674,12 +774,10 @@ var model = {
   lanSharedMAC: '',
   lanAddr: '',
   lanPrefix: '',
-  lanTenant: '',
   dataIPBlock1: '',
   dataIPBlock2: '',
   prismaIPtunnelIP: '',
   prismaPSK: '',
-  voiceTenant: '',
   LTEnode2APN: '',
   node1OSNLoopback: '',
   node2OSNLoopback: '',

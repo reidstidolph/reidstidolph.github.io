@@ -589,6 +589,7 @@ let template = `config
                 source      chs-site
                 permission  allow
             exit
+            service-policy  Business-Data-MPLS
         exit
 
         service  guest-wifi

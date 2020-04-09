@@ -53,17 +53,17 @@ let template = `config
                     type                  ethernet
                     pci-address           {{ model.wanNode1PciAddr1 }}
 
-                    network-interface     AVPN1-vlan{{ model.wanVlan1 }}
-                        name                 AVPN1-vlan{{ model.wanVlan1 }}
+                    network-interface     AVPN1-vlan0
+                        name                 AVPN1-vlan0
                         type                 external
-                        vlan                 {{ model.wanVlan1 }}
+                        conductor            true
 
                         neighborhood         DC-MPLS
                             name                DC-MPLS
                             topology            spoke
                             vector              MPLS-01
                         exit
-                        inter-router-security   internal
+                        inter-router-security   peer-sec
                         source-nat           true
 
                         address              {{ model.wanAddr1 }}
@@ -80,11 +80,11 @@ let template = `config
                     pci-address           {{ model.lanNode1PciAddr }}
                     shared-phys-address   {{ model.lanSharedMAC }}
 
-                    network-interface     LAN-vlan{{ model.lanVlan }}
-                        name                 LAN-vlan{{ model.lanVlan }}
+                    network-interface     LAN-vlan2020
+                        name                 LAN-vlan2020
                         global-id            3
                         type                 external
-                        vlan                 {{ model.lanVlan }}
+                        vlan                 2020
                         neighborhood         {{ model.routerName }}-lan1
                             name  {{ model.routerName }}-lan1
                         exit
@@ -228,10 +228,9 @@ let template = `config
                     type                  ethernet
                     pci-address           {{ model.wanNode2PciAddr2 }}
 
-                    network-interface     ADI-vlan{{ model.wanVlan2 }}
-                        name                 ADI-vlan{{ model.wanVlan2 }}
+                    network-interface     ADI-vlan0
+                        name                 ADI-vlan0
                         type                 external
-                        vlan                 {{ model.wanVlan2 }}
                         conductor            true
 
                         neighborhood         DC-Internet-Broadband
@@ -245,7 +244,7 @@ let template = `config
                             topology            hub
                             vector              Broadband-01
                         exit
-                        inter-router-security   internal
+                        inter-router-security   peer-sec
                         source-nat           true
 
                         address              {{ model.wanAddr2 }}
@@ -262,11 +261,11 @@ let template = `config
                     pci-address           {{ model.lanNode2PciAddr }}
                     shared-phys-address   {{ model.lanSharedMAC }}
 
-                    network-interface     LAN-vlan{{ model.lanVlan }}
-                        name                 LAN-vlan{{ model.lanVlan }}
+                    network-interface     LAN-vlan2020
+                        name                 LAN-vlan2020
                         global-id            3
                         type                 external
-                        vlan                 {{ model.lanVlan }}
+                        vlan                 2020
                         neighborhood         {{ model.routerName }}-lan1
                             name  {{ model.routerName }}-lan1
                         exit
@@ -395,7 +394,7 @@ let template = `config
                                 enabled  true
                             exit
                         exit
-                        inter-router-security  internal
+                        inter-router-security  peer-sec
                         source-nat             true
                         dhcp                   v4
                     exit
@@ -477,9 +476,9 @@ let template = `config
                name          static-guest-wifi
                service-name  guest-wifi
 
-               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+               next-hop      {{ model.node2Name }} ADI-vlan0
                         node-name  {{ model.node2Name }}
-                        interface  ADI-vlan{{ model.wanVlan2 }}
+                        interface  ADI-vlan0
                         gateway-ip {{ model.wanGw2 }}
                exit
             exit
@@ -488,9 +487,9 @@ let template = `config
                name          static-router-internet
                service-name  router-internet
 
-               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+               next-hop      {{ model.node2Name }} ADI-vlan0
                         node-name  {{ model.node2Name }}
-                        interface  ADI-vlan{{ model.wanVlan2 }}
+                        interface  ADI-vlan0
                         gateway-ip {{ model.wanGw2 }}
                exit
             exit
@@ -537,7 +536,7 @@ let template = `config
                 type        router-group
                 group-name  nds-dc
             exit
-            security       internal
+            security       service-sec
             address        {{ model.node1OSNLoopback }}
 
             access-policy  ics-mgmt
@@ -558,7 +557,7 @@ let template = `config
                 type        router-group
                 group-name  nds-dc
             exit
-            security       internal
+            security       service-sec
             address        {{ model.node2OSNLoopback }}
 
             access-policy  ics-mgmt
@@ -579,7 +578,7 @@ let template = `config
                 type        router-group
                 group-name  nds-dc
             exit
-            security       internal
+            security       service-sec
             address        {{ model.node1MSBRMgmt }}
 
             access-policy  ics-mgmt
@@ -600,7 +599,7 @@ let template = `config
                 type        router-group
                 group-name  nds-dc
             exit
-            security       internal
+            security       service-sec
             address        {{ model.node2MSBRMgmt }}
 
             access-policy  ics-mgmt
@@ -617,7 +616,7 @@ let template = `config
                 group-name  clinics
                 group-name  hospitals
             exit
-            security       internal
+            security       encrypt-hmac-disabled
             address        0.0.0.0/0
 
             access-policy  chs-guest
@@ -635,7 +634,7 @@ let template = `config
                 group-name  clinics
                 group-name  hospitals
             exit
-            security       internal
+            security       encrypt-hmac-disabled
             address        0.0.0.0/0
 
             access-policy  ics-mgmt
@@ -657,8 +656,6 @@ var model = {
 #                                                                              #
 ################################################################################
 */
-  authorityName: '',
-  conductorAddr1: '',
   routerName: '',
   siteAddress: '',
   siteCoordinates: '',
@@ -668,17 +665,14 @@ var model = {
   trapServer1: '',
   node1Name: '',
   node2Name: '',
-  wanVlan1: '',
   wanNode1PciAddr1: '',
   wanAddr1: '',
   wanPrefix1: '',
   wanGw1: '',
-  wanVlan2: '',
   wanNode2PciAddr2: '',
   wanAddr2: '',
   wanPrefix2: '',
   wanGw2: '',
-  lanVlan: '',
   lanNode1PciAddr: '',
   lanNode2PciAddr: '',
   lanSharedMAC: '',
@@ -687,12 +681,14 @@ var model = {
   lanTenant: '',
   dataIPBlock1: '',
   dataIPBlock2: '',
+  prismaIPtunnelIP: '',
+  prismaPSK: '',
   voiceTenant: '',
+  LTEnode2APN: '',
   fabricNode1PciAddr: '',
   fabricNode2PciAddr: '',
   syncNode1PciAddr: '',
   syncNode2PciAddr: '',
-  LTEnode2APN: '',
   node1OSNLoopback: '',
   node2OSNLoopback: '',
   MSBRVoiceVlan: '',

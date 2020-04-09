@@ -32,8 +32,6 @@
 #                                                                              #
 ################################################################################
 -->
-            <v-text-field label="Authority Name" v-model="model.authorityName" regular></v-text-field>
-            <v-text-field label="Conductor Address" v-model="model.conductorAddr1" regular></v-text-field>
             <v-text-field label="Router Name" v-model="model.routerName" regular></v-text-field>
             <v-text-field label="Site Address" v-model="model.siteAddress" regular></v-text-field>
             <v-text-field label="Site Coordinates" v-model="model.siteCoordinates" regular></v-text-field>
@@ -43,26 +41,26 @@
             <v-text-field label="Trap Server IP1 Address" v-model="model.trapServer1" regular></v-text-field>
             <v-text-field label="Node1 Name" v-model="model.node1Name" regular></v-text-field>
             <v-text-field label="Node2 Name" v-model="model.node2Name" regular></v-text-field>
-            <v-text-field label="WAN1 VLAN" v-model="model.wanVlan1" regular></v-text-field>
             <v-text-field label="Node1 WAN1 Device PCI Address" v-model="model.wanNode1PciAddr1" regular></v-text-field>
             <v-text-field label="WAN1 IP Address" v-model="model.wanAddr1" regular></v-text-field>
             <v-text-field label="WAN1 Prefix" v-model="model.wanPrefix1" reagular></v-text-field>
             <v-text-field label="WAN1 Gateway" v-model="model.wanGw1" regular></v-text-field>
-            <v-text-field label="WAN2 VLAN" v-model="model.wanVlan2" regular></v-text-field>
             <v-text-field label="Node2 WAN2 Device PCI Address" v-model="model.wanNode2PciAddr2" regular></v-text-field>
             <v-text-field label="WAN2 IP Address" v-model="model.wanAddr2" regular></v-text-field>
             <v-text-field label="WAN2 Prefix" v-model="model.wanPrefix2" reagular></v-text-field>
             <v-text-field label="WAN2 Gateway" v-model="model.wanGw2" regular></v-text-field>
-            <v-text-field label="LAN VLAN" v-model="model.lanVlan" regular></v-text-field>
             <v-text-field label="Node1 LAN Device PCI Address" v-model="model.lanNode1PciAddr" regular></v-text-field>
             <v-text-field label="Node2 LAN Device PCI Address" v-model="model.lanNode2PciAddr" regular></v-text-field>
             <v-text-field label="LAN HA Shared MAC" v-model="model.lanSharedMAC" regular></v-text-field>
             <v-text-field label="LAN IP Address" v-model="model.lanAddr" regular></v-text-field>
-            <v-text-field label="LAN Prefix" v-model="model.lanPrefix" reagular></v-text-field>
+            <v-text-field label="LAN Prefix" v-model="model.lanPrefix" regular></v-text-field>
             <v-text-field label="Data LAN Tenant" v-model="model.lanTenant" regular></v-text-field>
             <v-text-field label="Data LAN Segment1 IP/Prefix" v-model="model.dataIPBlock1" regular></v-text-field>
             <v-text-field label="Data LAN Segment2 IP/Prefix" v-model="model.dataIPBlock2" regular></v-text-field>
+            <v-text-field label="Palo Prisma Remote Tunnel IP Address" v-model="model.prismaIPtunnelIP" regular></v-text-field>
+            <v-text-field label="Palo Prisma Preshared Key" v-model="model.prismaPSK" regular></v-text-field>
             <v-text-field label="Voice LAN Tenant" v-model="model.voiceTenant" regular></v-text-field>
+            <v-text-field label="Node2 LTE APN Name" v-model="model.LTEnode2APN" regular></v-text-field>
             <v-text-field label="Node1 HA Fabric/Dogleg Device PCI Address" v-model="model.fabricNode1PciAddr" regular></v-text-field>
             <v-text-field label="Node2 HA Fabric/Dogleg Device PCI Address" v-model="model.fabricNode2PciAddr" regular></v-text-field>
             <v-text-field label="Node1 HA Sync Device PCI Address" v-model="model.syncNode1PciAddr" regular></v-text-field>
@@ -72,7 +70,6 @@
             <v-text-field label="Node1/Node2 MSBR Voice VLAN" v-model="model.MSBRVoiceVlan" regular></v-text-field>
             <v-text-field label="Node1/Node2 MSBR Voice IP Address" v-model="model.MSBRVoiceAddr" regular></v-text-field>
             <v-text-field label="Node1/Node2 MSBR Voice Prefix" v-model="model.MSBRVoicePrefix" regular></v-text-field>
-            <v-text-field label="Node2 LTE APN Name" v-model="model.LTEnode2APN" regular></v-text-field>
             <v-text-field label="Node1 Loopback Managment IP Address" v-model="model.node1OSNLoopback" regular></v-text-field>
             <v-text-field label="Node2 Loopback Managment IP Address" v-model="model.node2OSNLoopback" regular></v-text-field>
             <v-text-field label="Loopback Managment DNS1" v-model="model.DNS1" regular></v-text-field>

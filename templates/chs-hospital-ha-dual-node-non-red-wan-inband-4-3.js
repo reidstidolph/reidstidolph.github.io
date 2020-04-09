@@ -51,7 +51,7 @@ let template = `config
                 device-interface          AVPN1-enp1s0
                     name                  AVPN1-enp1s0
                     type                  ethernet
-                    pci-address           {{ model.wanNode1PciAddr1 }}
+                    pci-address           0000:01:00.0
 
                     network-interface     AVPN1-vlan0
                         name                 AVPN1-vlan0
@@ -77,7 +77,7 @@ let template = `config
                  device-interface         LAN-enp2s0
                     name                  LAN-enp2s0
                     type                  ethernet
-                    pci-address           {{ model.lanNode1PciAddr }}
+                    pci-address           0000:02:00.0
                     shared-phys-address   {{ model.lanSharedMAC }}
 
                     network-interface     LAN-vlan2020
@@ -118,7 +118,7 @@ let template = `config
                     name               fabric-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
-                    pci-address        {{ model.fabricNode1PciAddr }}
+                    pci-address        0000:03:00.0
 
                     network-interface  ha-fabric
                         name               ha-fabric
@@ -135,7 +135,7 @@ let template = `config
                     name               sync-enp4s0
                     description        "HA state synchronization link"
                     type               ethernet
-                    pci-address        {{ model.syncNode1PciAddr }}
+                    pci-address        0000:04:00.0
                     forwarding         false
 
                     network-interface  ha-sync
@@ -226,7 +226,7 @@ let template = `config
                 device-interface          ADI-enp1s0
                     name                  ADI-enp1s0
                     type                  ethernet
-                    pci-address           {{ model.wanNode2PciAddr2 }}
+                    pci-address           0000:01:00.0
 
                     network-interface     ADI-vlan0
                         name                 ADI-vlan0
@@ -258,7 +258,7 @@ let template = `config
                  device-interface         LAN-enp2s0
                     name                  LAN-enp2s0
                     type                  ethernet
-                    pci-address           {{ model.lanNode2PciAddr }}
+                    pci-address           0000:02:00.0
                     shared-phys-address   {{ model.lanSharedMAC }}
 
                     network-interface     LAN-vlan2020
@@ -299,7 +299,7 @@ let template = `config
                     name               fabric-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
-                    pci-address        {{ model.fabricNode2PciAddr }}
+                    pci-address        0000:03:00.0
 
                     network-interface  ha-fabric
                         name               ha-fabric
@@ -316,7 +316,7 @@ let template = `config
                     name               sync-enp4s0
                     description        "HA state synchronization link"
                     type               ethernet
-                    pci-address        {{ model.syncNode2PciAddr }}
+                    pci-address        0000:04:00.0
                     forwarding         false
 
                     network-interface  ha-sync
@@ -665,16 +665,12 @@ var model = {
   trapServer1: '',
   node1Name: '',
   node2Name: '',
-  wanNode1PciAddr1: '',
   wanAddr1: '',
   wanPrefix1: '',
   wanGw1: '',
-  wanNode2PciAddr2: '',
   wanAddr2: '',
   wanPrefix2: '',
   wanGw2: '',
-  lanNode1PciAddr: '',
-  lanNode2PciAddr: '',
   lanSharedMAC: '',
   lanAddr: '',
   lanPrefix: '',
@@ -685,10 +681,6 @@ var model = {
   prismaPSK: '',
   voiceTenant: '',
   LTEnode2APN: '',
-  fabricNode1PciAddr: '',
-  fabricNode2PciAddr: '',
-  syncNode1PciAddr: '',
-  syncNode2PciAddr: '',
   node1OSNLoopback: '',
   node2OSNLoopback: '',
   MSBRVoiceVlan: '',

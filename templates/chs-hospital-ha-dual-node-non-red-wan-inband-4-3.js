@@ -115,8 +115,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface            fabric-enp3s0
-                    name               fabric-enp3s0
+                device-interface            fabr-enp3s0
+                    name               fabr-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
                     pci-address        0000:03:00.0
@@ -204,7 +204,7 @@ let template = `config
                         address            100.111.0.1
                             ip-address        100.111.0.1
                             gateway           {{ model.node1OSNLoopback }}
-                            prefix-length     31
+                            prefix-length     20
                         exit
 
                         ifcfg-option     DNS1
@@ -303,8 +303,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface            fabric-enp3s0
-                    name               fabric-enp3s0
+                device-interface            fabr-enp3s0
+                    name               fabr-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
                     pci-address        0000:03:00.0
@@ -487,9 +487,9 @@ let template = `config
                 name          sfc-prisma-chs-internet
                 service-name  chs-internet
 
-                next-hop      demo-ha-node2 prisma2-intf
-                        node-name   demo-ha-node2
-                        interface   prisma2-intf
+                next-hop      {{ model.node2Name }} primsa-srv-intf
+                        node-name   {{ model.node2Name }}
+                        interface   primsa-srv-intf
                         gateway-ip  169.254.129.6
                 exit
             exit

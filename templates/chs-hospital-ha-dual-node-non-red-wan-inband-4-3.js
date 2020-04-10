@@ -440,8 +440,8 @@ let template = `config
                     exit
                 exit
 
-                ipsec-client        CRWD-SDW-RTR
-                    name            CRWD-SDW-RTR
+                ipsec-client        {{ model.routerName }}
+                    name            {{ model.routerName }}
                     enabled         true
                     tenant          sfc-palo
 

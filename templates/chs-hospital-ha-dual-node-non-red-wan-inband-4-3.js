@@ -102,15 +102,28 @@ let template = `config
                     exit
 
                     network-interface     LAN-vlan2030
-                        name                 LAN-vlanvlan2030
+                        name                 LAN-vlan2030
                         global-id            4
                         type                 external
                         vlan                 2030
                         tenant               chs-guest
 
-                        address              192.168.0.1
+                        address                   192.168.0.1
                             ip-address     192.168.0.1
                             prefix-length  18
+
+                            host-service   dhcp-server
+                                service-type    dhcp-server
+                                max-lease-time  7200
+
+                                address-pool    192.168.0.10
+                                    start-address  192.168.0.10
+                                    end-address    192.168.63.254
+                                    router         192.168.0.1
+                                    domain-server  8.8.8.8
+                                    domain-server  4.4.2.2
+                                exit
+                            exit
                         exit
                     exit
                 exit
@@ -290,15 +303,28 @@ let template = `config
                     exit
 
                     network-interface     LAN-vlan2030
-                        name                 LAN-vlanvlan2030
+                        name                 LAN-vlan2030
                         global-id            4
                         type                 external
                         vlan                 2030
                         tenant               chs-guest
 
-                        address              192.168.0.1
+                        address                   192.168.0.1
                             ip-address     192.168.0.1
                             prefix-length  18
+
+                            host-service   dhcp-server
+                                service-type    dhcp-server
+                                max-lease-time  7200
+
+                                address-pool    192.168.0.10
+                                    start-address  192.168.0.10
+                                    end-address    192.168.63.254
+                                    router         192.168.0.1
+                                    domain-server  8.8.8.8
+                                    domain-server  4.4.2.2
+                                exit
+                            exit
                         exit
                     exit
                 exit
@@ -381,6 +407,7 @@ let template = `config
 
                     network-interface  lte-dhcp
                         name                   lte-dhcp
+                        conductor            true
 
                         neighborhood           DC-Internet-LTE
                             name                DC-Internet-LTE
@@ -445,7 +472,7 @@ let template = `config
                     enabled         true
                     tenant          sfc-palo
 
-                    remote          primsa-srv
+                    remote          prisma-srv
                         name     prisma-srv
                         host     {{ model.prismaIPtunnelIP }}
                         profile  prisma
@@ -487,9 +514,9 @@ let template = `config
                 name          sfc-prisma-chs-internet
                 service-name  chs-internet
 
-                next-hop      {{ model.node2Name }} primsa-srv-intf
+                next-hop      {{ model.node2Name }} prisma-srv-intf
                         node-name   {{ model.node2Name }}
-                        interface   primsa-srv-intf
+                        interface   prisma-srv-intf
                         gateway-ip  169.254.129.6
                 exit
             exit

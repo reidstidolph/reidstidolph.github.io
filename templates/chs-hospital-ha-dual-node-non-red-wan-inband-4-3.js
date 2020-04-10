@@ -97,6 +97,7 @@ let template = `config
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}
                             prefix-length  {{ model.lanPrefix }}
+                            gateway        {{ model.lanGw }}
                         exit
                     exit
 
@@ -284,6 +285,7 @@ let template = `config
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}
                             prefix-length  {{ model.lanPrefix }}
+                            gateway        {{ model.lanGw }}
                         exit
                     exit
 
@@ -437,6 +439,20 @@ let template = `config
                         exit
                     exit
                 exit
+
+                ipsec-client        CRWD-SDW-RTR
+                    name            CRWD-SDW-RTR
+                    enabled         true
+                    tenant          sfc-palo
+
+                    remote          primsa-srv
+                        name     prisma-srv
+                        host     {{ model.prismaIPtunnelIP }}
+                        profile  prisma
+                        tenant   hospitals.chs-site
+                    exit
+                    plugin-network  169.254.129.0/28
+                exit
             exit
 
             service-route     local-{{ model.routerName }}-LAN-summary
@@ -444,13 +460,37 @@ let template = `config
                 service-name  {{ model.routerName }}-LAN-summary
 
                 next-hop      {{ model.node1Name }} LAN-vlan2020
-                        node-name  {{ model.node1Name }}
-                        interface  LAN-vlan2020
+                        node-name   {{ model.node1Name }}
+                        interface   LAN-vlan2020
+                        gateway-ip  {{ model.lanGw }}
                 exit
 
                 next-hop      {{ model.node2Name }} LAN-vlan2020
-                        node-name  {{ model.node1Name }}
-                        interface  LAN-vlan2020
+                        node-name   {{ model.node1Name }}
+                        interface   LAN-vlan2020
+                        gateway-ip  {{ model.lanGw }}
+                exit
+            exit
+
+            service-route  static-prisma-ipsec
+                name          static-prisma-ipsec
+                service-name  prisma-ipsec
+
+                next-hop      {{ model.node2Name }} ADI-vlan0
+                        node-name   {{ model.node2Name }}
+                        interface   ADI-vlan0
+                        gateway-ip  {{ model.wanGw2 }}
+                exit
+            exit
+
+            service-route  sfc-prisma-chs-internet
+                name          sfc-prisma-chs-internet
+                service-name  chs-internet
+
+                next-hop      demo-ha-node2 prisma2-intf
+                        node-name   demo-ha-node2
+                        interface   prisma2-intf
+                        gateway-ip  169.254.129.6
                 exit
             exit
 
@@ -541,6 +581,23 @@ let template = `config
                description   "Second Priority Path"
                max-sessions  100000000
             exit
+
+            ipsec-profile         prisma
+               name                     prisma
+               ike-encryption           aes256
+               ike-digest               sha2
+               ike-modp                 modp2048
+               ikev2                    insist
+               authentication-protocol  esp
+               phase2-encryption        aes256
+               phase2-digest            sha2
+               phase2-modp              modp2048
+               ike-lifetime             8h
+               connection-lifetime      16h
+               compress                 false
+               perfect-forward-secrecy  false
+               pre-shared-key           {{ model.prismaPSK }}
+            exit
         exit
 
         tenant  hospitals.chs-site
@@ -596,8 +653,27 @@ let template = `config
             security       encrypt-hmac-disabled
             address        0.0.0.0/0
 
-            access-policy  chs-site
+            access-policy   chs-site
                 source      chs-site
+                permission  allow
+            exit
+            share-service-routes  false
+        exit
+
+        service  prisma-ipsec
+            name           prisma-ipsec
+
+            applies-to      router-group
+                type        router-group
+                group-name  clinics
+                group-name  hospitals
+            exit
+
+            security       encrypt-hmac-disabled
+            address        0.0.0.0/0
+
+            access-policy   sfc-palo
+                source      sfc-palo
                 permission  allow
             exit
             share-service-routes  false

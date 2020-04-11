@@ -56,7 +56,6 @@ let template = `config
                     network-interface     AVPN1-vlan0
                         name                 AVPN1-vlan0
                         type                 external
-                        conductor            true
 
                         neighborhood         DC-MPLS
                             name                DC-MPLS

@@ -430,6 +430,10 @@ let template = `config
                         exit
                         inter-router-security  peer-sec
                         source-nat             true
+
+                        management-vector
+                            priority  128
+                        exit
                         dhcp                   v4
                     exit
                 exit

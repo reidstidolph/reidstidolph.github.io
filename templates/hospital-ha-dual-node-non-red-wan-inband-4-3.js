@@ -432,6 +432,7 @@ let template = `config
                         source-nat             true
 
                         management-vector
+                            name      lte
                             priority  128
                         exit
                         dhcp                   v4
@@ -583,6 +584,11 @@ let template = `config
                         node-name  {{ model.node2Name }}
                         interface  ADI-vlan0
                         gateway-ip {{ model.wanGw2 }}
+               exit
+
+               next-hop      {{ model.node2Name }} lte-dhcp
+                        node-name  {{ model.node2Name }}
+                        interface  lte-dhcp
                exit
             exit
 

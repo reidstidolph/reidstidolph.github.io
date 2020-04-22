@@ -57,10 +57,16 @@ let template = `config
                         name                 AVPN1-vlan0
                         type                 external
 
-                        neighborhood         DC-MPLS
-                            name                DC-MPLS
+                        neighborhood         DC-MPLS-01
+                            name                DC-MPLS-01
                             topology            spoke
                             vector              MPLS-01
+                        exit
+
+                        neighborhood         DC-MPLS-02
+                            name               DC-MPLS-02
+                            topology           spoke
+                            vector             MPLS-02
                         exit
                         inter-router-security   peer-sec
                         source-nat           true
@@ -246,10 +252,16 @@ let template = `config
                         type                 external
                         conductor            true
 
-                        neighborhood         DC-Internet-Broadband
-                            name                DC-Internet-Broadband
+                        neighborhood         DC-Internet-Broadband-01
+                            name                DC-Internet-Broadband-01
                             topology            spoke
                             vector              Broadband-01
+                        exit
+
+                        neighborhood         DC-Internet-Broadband-02
+                            name                DC-Internet-Broadband-02
+                            topology            spoke
+                            vector              Broadband-02
                         exit
 
                         neighborhood         ICS-NOC-Broadband
@@ -408,10 +420,31 @@ let template = `config
                         name                   lte-dhcp
                         conductor            true
 
-                        neighborhood           DC-Internet-LTE
-                            name                DC-Internet-LTE
+                        neighborhood           DC-Internet-LTE-01
+                            name                DC-Internet-LTE-01
                             peer-connectivity   outbound-only
-                            vector              LTE
+                            vector              LTE-01
+
+                            bfd
+                                state                     enabled
+                                desired-tx-interval       60000
+                                required-min-rx-interval  60000
+                                link-test-interval        120
+                            exit
+
+                            udp-transform
+                                mode  always-transform
+                            exit
+
+                            path-mtu-discovery
+                                enabled  true
+                            exit
+                        exit
+
+                        neighborhood           DC-Internet-LTE-02
+                            name                DC-Internet-LTE-02
+                            peer-connectivity   outbound-only
+                            vector              LTE-02
 
                             bfd
                                 state                     enabled
@@ -489,6 +522,23 @@ let template = `config
             service-route     local-{{ model.routerName }}-LAN-summary
                 name          local-{{ model.routerName }}-LAN-summary
                 service-name  {{ model.routerName }}-LAN-summary
+
+                next-hop      {{ model.node1Name }} LAN-vlan2020
+                        node-name   {{ model.node1Name }}
+                        interface   LAN-vlan2020
+                        gateway-ip  {{ model.lanGw }}
+                exit
+
+                next-hop      {{ model.node2Name }} LAN-vlan2020
+                        node-name   {{ model.node1Name }}
+                        interface   LAN-vlan2020
+                        gateway-ip  {{ model.lanGw }}
+                exit
+            exit
+
+            service-route     local-{{ model.routerName }}-mgmt-LAN-summary
+                name          local-{{ model.routerName }}-mgmt-LAN-summary
+                service-name  {{ model.routerName }}-mgmt-LAN-summary
 
                 next-hop      {{ model.node1Name }} LAN-vlan2020
                         node-name   {{ model.node1Name }}
@@ -662,6 +712,57 @@ let template = `config
                 group-name  bdc
             exit
             security       service-sec
+            address        {{ model.dataIPBlock1 }}
+            address        {{ model.dataIPBlock2 }}
+
+            access-policy   chs-dc
+                source      chs-dc
+                permission  allow
+            exit
+
+            access-policy   chs-site
+                source      chs-site
+                permission  allow
+            exit
+            service-policy  Business-Data-MPLS-no-LTE
+        exit
+
+        service  {{ model.routerName }}-mgmt-LAN-summary
+            name           {{ model.routerName }}-mgmt-LAN-summary
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
+            exit
+
+            applies-to      router-group
+                type        router-group
+                group-name  bdc
+            exit
+            security       service-sec
+
+            transport       tcp
+                protocol    tcp
+
+                port-range  22
+                    start-port  22
+                    end-port    22
+                exit
+
+                port-range  3389
+                    start-port  3389
+                    end-port    3389
+                exit
+            exit
+
+            transport       udp
+                protocol    udp
+
+                port-range  161
+                    start-port  161
+                    end-port    161
+                exit
+            exit
             address        {{ model.dataIPBlock1 }}
             address        {{ model.dataIPBlock2 }}
 

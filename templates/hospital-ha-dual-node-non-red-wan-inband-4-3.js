@@ -712,6 +712,18 @@ let template = `config
                 group-name  bdc
             exit
             security       service-sec
+
+            transport       tcp
+                protocol  tcp
+            exit
+
+            transport       udp
+                protocol  udp
+            exit
+
+            transport       icmp
+                protocol  icmp
+            exit
             address        {{ model.dataIPBlock1 }}
             address        {{ model.dataIPBlock2 }}
 

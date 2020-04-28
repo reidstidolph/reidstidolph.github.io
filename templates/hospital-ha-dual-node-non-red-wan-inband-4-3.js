@@ -566,6 +566,15 @@ let template = `config
                 exit
             exit
 
+            service-route  svr-bdc-prisma-chs-internet
+                name          svr-bdc-prisma-chs-internet
+                service-name  chs-internet
+                generated     false
+                next-peer     BHMAL1-P-SDW-01
+                next-peer     BHMAL1-P-SDW-02
+                service-route-policy  sessions-second
+            exit
+
             service-route  sfc-prisma-chs-internet
                 name          sfc-prisma-chs-internet
                 service-name  chs-internet
@@ -575,6 +584,7 @@ let template = `config
                         interface   prisma-srv-intf
                         gateway-ip  169.254.129.6
                 exit
+                service-route-policy  sessions-first
             exit
 
             service-route     static-guest-wifi

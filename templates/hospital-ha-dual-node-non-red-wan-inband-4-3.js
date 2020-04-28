@@ -98,6 +98,7 @@ let template = `config
                             name  {{ model.routerName }}-lan2
                         exit
                         inter-router-security  peer-sec
+                        rewrite-dscp           true
 
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}
@@ -305,6 +306,7 @@ let template = `config
                             name  {{ model.routerName }}-lan2
                         exit
                         inter-router-security  peer-sec
+                        rewrite-dscp           true
 
                         address              {{ model.lanAddr }}
                             ip-address     {{ model.lanAddr }}

@@ -56,6 +56,7 @@ let template = `config
                     network-interface     AVPN1-vlan0
                         name                 AVPN1-vlan0
                         type                 external
+                        vlan                 {{ model.wanVlan1 }}
 
                         neighborhood         DC-MPLS-01
                             name                DC-MPLS-01
@@ -945,6 +946,7 @@ var model = {
   trapServer1: '',
   node1Name: '',
   node2Name: '',
+  wanVlan1: '',
   wanAddr1: '',
   wanPrefix1: '',
   wanGw1: '',

@@ -749,7 +749,7 @@ let template = `config
                 source      chs-site
                 permission  allow
             exit
-            service-policy  Business-Data-MPLS-no-LTE
+            service-policy  Default-MPLS-no-LTE
         exit
 
         service  {{ model.routerName }}-mgmt-LAN-summary
@@ -800,7 +800,7 @@ let template = `config
                 source      chs-site
                 permission  allow
             exit
-            service-policy  Business-Data-MPLS
+            service-policy  Mission-Critical-MPLS
         exit
 
         service  chs-internet

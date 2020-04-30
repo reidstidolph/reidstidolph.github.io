@@ -819,7 +819,7 @@ let template = `config
                 source      chs-site
                 permission  allow
             exit
-            service-policy        Business-Data-BB-no-LTE
+            service-policy        Default-BB-no-LTE
             share-service-routes  false
         exit
 

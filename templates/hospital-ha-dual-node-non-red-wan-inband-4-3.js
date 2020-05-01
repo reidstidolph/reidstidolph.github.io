@@ -52,6 +52,12 @@ let template = `config
                     name                  AVPN1-enp1s0
                     type                  ethernet
                     pci-address           0000:01:00.0
+                    link-settings         100Mbps-full
+
+                    traffic-engineering
+                       enabled            true
+                       transmit-cap       90000000
+                    exit
 
                     network-interface     AVPN1-vlan{{ model.wanVlan1 }}
                         name                 AVPN1-{{ model.wanVlan1 }}
@@ -253,6 +259,12 @@ let template = `config
                     name                  ADI-enp1s0
                     type                  ethernet
                     pci-address           0000:01:00.0
+                    link-settings         auto
+
+                    traffic-engineering
+                       enabled            true
+                       transmit-cap       90000000
+                    exit
 
                     network-interface     ADI-vlan{{ model.wanVlan2 }}
                         name                 ADI-vlan{{ model.wanVlan2 }}

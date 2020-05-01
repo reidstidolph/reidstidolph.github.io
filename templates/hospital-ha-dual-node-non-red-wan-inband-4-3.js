@@ -53,8 +53,8 @@ let template = `config
                     type                  ethernet
                     pci-address           0000:01:00.0
 
-                    network-interface     AVPN1-vlan0
-                        name                 AVPN1-vlan0
+                    network-interface     AVPN1-vlan{{ model.wanVlan1 }}
+                        name                 AVPN1-{{ model.wanVlan1 }}
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
 
@@ -236,6 +236,11 @@ let template = `config
                             name            DNS2
                             value           {{ model.DNS2 }}
                         exit
+
+                        ifcfg-option     ZONE
+                            name            ZONE
+                            value           trusted
+                        exit
                     exit
                 exit
             exit
@@ -249,9 +254,10 @@ let template = `config
                     type                  ethernet
                     pci-address           0000:01:00.0
 
-                    network-interface     ADI-vlan0
-                        name                 ADI-vlan0
+                    network-interface     ADI-vlan{{ model.wanVlan2 }}
+                        name                 ADI-vlan{{ model.wanVlan2 }}
                         type                 external
+                        vlan                 {{ model.wanVlan2 }}
                         conductor            true
 
                         neighborhood         DC-Internet-Broadband-01
@@ -504,6 +510,11 @@ let template = `config
                             name            DNS2
                             value           {{ model.DNS2 }}
                         exit
+
+                        ifcfg-option     ZONE
+                            name            ZONE
+                            value           trusted
+                        exit
                     exit
                 exit
 
@@ -560,9 +571,9 @@ let template = `config
                 name          static-prisma-ipsec
                 service-name  prisma-ipsec
 
-                next-hop      {{ model.node2Name }} ADI-vlan0
+                next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
                         node-name   {{ model.node2Name }}
-                        interface   ADI-vlan0
+                        interface   ADI-vlan{{ model.wanVlan2 }}
                         gateway-ip  {{ model.wanGw2 }}
                 exit
             exit
@@ -592,9 +603,9 @@ let template = `config
                name          static-guest-wifi
                service-name  guest-wifi
 
-               next-hop      {{ model.node2Name }} ADI-vlan0
+               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
                         node-name  {{ model.node2Name }}
-                        interface  ADI-vlan0
+                        interface  ADI-vlan{{ model.wanVlan2 }}
                         gateway-ip {{ model.wanGw2 }}
                exit
             exit
@@ -643,9 +654,9 @@ let template = `config
                name          static-router-internet
                service-name  router-internet
 
-               next-hop      {{ model.node2Name }} ADI-vlan0
+               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
                         node-name  {{ model.node2Name }}
-                        interface  ADI-vlan0
+                        interface  ADI-vlan{{ model.wanVlan2 }}
                         gateway-ip {{ model.wanGw2 }}
                exit
 
@@ -950,6 +961,7 @@ var model = {
   wanAddr1: '',
   wanPrefix1: '',
   wanGw1: '',
+  wanVlan2: '',
   wanAddr2: '',
   wanPrefix2: '',
   wanGw2: '',

@@ -56,7 +56,8 @@ let template = `config
 
                     traffic-engineering
                        enabled            true
-                       transmit-cap       90000000
+                       transmit-cap       95000000
+                       traffic-profile    AVPN-Profile
                     exit
 
                     network-interface     AVPN1-vlan{{ model.wanVlan1 }}
@@ -263,7 +264,8 @@ let template = `config
 
                     traffic-engineering
                        enabled            true
-                       transmit-cap       90000000
+                       transmit-cap       95000000
+                       traffic-profile    ADI-Profile
                     exit
 
                     network-interface     ADI-vlan{{ model.wanVlan2 }}
@@ -718,6 +720,7 @@ let template = `config
                connection-lifetime      16h
                compress                 false
                perfect-forward-secrecy  false
+               local-id                 {{ model.wanAddr2 }}
                pre-shared-key           {{ model.prismaPSK }}
             exit
         exit

@@ -302,6 +302,22 @@ let template = `config
                             name                {{ model.routerName }}-Internet-LTE
                             topology            hub
                             vector              LTE-01
+                            
+                            bfd
+                                state                     enabled
+                                desired-tx-interval       60000
+                                required-min-rx-interval  60000
+                                link-test-interval        120
+                                link-test-length          0
+                            exit
+
+                            udp-transform
+                                mode  always-transform
+                            exit
+
+                            path-mtu-discovery
+                                enabled  true
+                            exit
                         exit
                         inter-router-security   peer-sec
                         source-nat           true

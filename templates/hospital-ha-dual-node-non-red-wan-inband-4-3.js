@@ -292,10 +292,16 @@ let template = `config
                             vector              Broadband-01
                         exit
 
-                        neighborhood         CRWD-Internet-Broadband
-                            name                CRWD-Internet-Broadband
+                        neighborhood         {{ model.routerName }}-Internet-Broadband
+                            name                {{ model.routerName }}-Internet-Broadband
                             topology            hub
                             vector              Broadband-01
+                        exit
+
+                        neighborhood         {{ model.routerName }}-Internet-LTE
+                            name                {{ model.routerName }}-Internet-LTE
+                            topology            hub
+                            vector              LTE-01
                         exit
                         inter-router-security   peer-sec
                         source-nat           true
@@ -453,6 +459,7 @@ let template = `config
                                 desired-tx-interval       60000
                                 required-min-rx-interval  60000
                                 link-test-interval        120
+                                link-test-length          0
                             exit
 
                             udp-transform
@@ -474,6 +481,7 @@ let template = `config
                                 desired-tx-interval       60000
                                 required-min-rx-interval  60000
                                 link-test-interval        120
+                                link-test-length          0
                             exit
 
                             udp-transform

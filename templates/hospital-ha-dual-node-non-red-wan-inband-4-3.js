@@ -101,10 +101,6 @@ let template = `config
                         neighborhood         {{ model.routerName }}-lan1
                             name  {{ model.routerName }}-lan1
                         exit
-
-                        neighborhood         {{ model.routerName }}-lan2
-                            name  {{ model.routerName }}-lan2
-                        exit
                         inter-router-security  peer-sec
                         rewrite-dscp           true
 
@@ -302,7 +298,7 @@ let template = `config
                             name                {{ model.routerName }}-Internet-LTE
                             topology            hub
                             vector              LTE-01
-                            
+
                             bfd
                                 state                     enabled
                                 desired-tx-interval       60000
@@ -343,10 +339,6 @@ let template = `config
                         vlan                 2020
                         neighborhood         {{ model.routerName }}-lan1
                             name  {{ model.routerName }}-lan1
-                        exit
-
-                        neighborhood         {{ model.routerName }}-lan2
-                            name  {{ model.routerName }}-lan2
                         exit
                         inter-router-security  peer-sec
                         rewrite-dscp           true
@@ -491,6 +483,28 @@ let template = `config
                             name                DC-Internet-LTE-02
                             peer-connectivity   outbound-only
                             vector              LTE-02
+
+                            bfd
+                                state                     enabled
+                                desired-tx-interval       60000
+                                required-min-rx-interval  60000
+                                link-test-interval        120
+                                link-test-length          0
+                            exit
+
+                            udp-transform
+                                mode  always-transform
+                            exit
+
+                            path-mtu-discovery
+                                enabled  true
+                            exit
+                        exit
+
+                        neighborhood         {{ model.routerName }}-LTE-Internet
+                            name                {{ model.routerName }}-LTE-Internet
+                            topology            hub
+                            vector              Broadband-02
 
                             bfd
                                 state                     enabled
@@ -755,9 +769,6 @@ let template = `config
             member  {{ model.routerName }}-lan1
                 neighborhood  {{ model.routerName }}-lan1
                 address       {{ model.dataIPBlock1 }}
-            exit
-            member  {{ model.routerName }}-lan2
-                neighborhood  {{ model.routerName }}-lan2
                 address       {{ model.dataIPBlock2 }}
             exit
         exit
@@ -903,6 +914,7 @@ let template = `config
             applies-to      router-group
                 type        router-group
                 group-name  nds-dc
+                group-name  bdc
             exit
             security       service-sec
             address        {{ model.node1OSNLoopback }}
@@ -924,6 +936,7 @@ let template = `config
             applies-to      router-group
                 type        router-group
                 group-name  nds-dc
+                group-name  bdc
             exit
             security       service-sec
             address        {{ model.node2OSNLoopback }}

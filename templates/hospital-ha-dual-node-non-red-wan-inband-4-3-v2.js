@@ -51,7 +51,7 @@ let template = `config
                 device-interface          AVPN1-enp1s0
                     name                  AVPN1-enp1s0
                     type                  ethernet
-                    pci-address           0000:01:00.0
+                    pci-address           0000:02:00.1
                     link-settings         100Mbps-full
 
                     traffic-engineering
@@ -90,7 +90,7 @@ let template = `config
                  device-interface         LAN-enp2s0
                     name                  LAN-enp2s0
                     type                  ethernet
-                    pci-address           0000:02:00.0
+                    pci-address           0000:04:00.1
                     shared-phys-address   {{ model.lanSharedMAC }}
 
                     network-interface     LAN-vlan2020
@@ -142,7 +142,7 @@ let template = `config
                     name               fabr-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
-                    pci-address        0000:03:00.0
+                    pci-address        0000:03:00.1
 
                     network-interface  ha-fabric
                         name               ha-fabric
@@ -159,7 +159,7 @@ let template = `config
                     name               sync-enp4s0
                     description        "HA state synchronization link"
                     type               ethernet
-                    pci-address        0000:04:00.0
+                    pci-address        0000:03:00.0
                     forwarding         false
 
                     network-interface  ha-sync
@@ -174,38 +174,6 @@ let template = `config
                         ifcfg-option     ZONE
                             name            ZONE
                             value           trusted
-                        exit
-                    exit
-                exit
-
-                device-interface       msbr-enp5s0
-                    name               msbr-enp5s0
-                    description        "Internal interface between OSN and MSBR"
-                    type               ethernet
-                    pci-address        0000:05:00.0
-
-                    network-interface  msbr-mgmt
-                        name               msbr-mgmt
-                        type               external
-                        vlan               128
-                        tenant             ics-mgmt
-                        source-nat         true
-
-                        address            100.111.15.254
-                            ip-address     100.111.15.254
-                            prefix-length  20
-                        exit
-                    exit
-
-                    network-interface     msbr-vlan{{ model.MSBRVoiceVlan }}
-                        name                 LAN-vlan{{ model.MSBRVoiceVlan }}
-                        type                 external
-                        vlan                 {{ model.MSBRVoiceVlan }}
-                        tenant               voice.chs-site
-
-                        address              {{ model.MSBRVoiceAddr }}
-                            ip-address     {{ model.MSBRVoiceAddr }}
-                            prefix-length  {{ model.MSBRVoicePrefix }}
                         exit
                     exit
                 exit
@@ -226,7 +194,7 @@ let template = `config
 
                         address            100.111.0.1
                             ip-address        100.111.0.1
-                            gateway           {{ model.node1OSNLoopback }}
+                            gateway           {{ model.node1Loopback }}
                             prefix-length     20
                         exit
 
@@ -255,7 +223,7 @@ let template = `config
                 device-interface          ADI-enp1s0
                     name                  ADI-enp1s0
                     type                  ethernet
-                    pci-address           0000:01:00.0
+                    pci-address           0000:02:00.1
                     link-settings         100Mbps-full
 
                     traffic-engineering
@@ -329,7 +297,7 @@ let template = `config
                  device-interface         LAN-enp2s0
                     name                  LAN-enp2s0
                     type                  ethernet
-                    pci-address           0000:02:00.0
+                    pci-address           0000:04:00.1
                     shared-phys-address   {{ model.lanSharedMAC }}
 
                     network-interface     LAN-vlan2020
@@ -381,7 +349,7 @@ let template = `config
                     name               fabr-enp3s0
                     description        "HA fabric/dogleg link"
                     type               ethernet
-                    pci-address        0000:03:00.0
+                    pci-address        0000:03:00.1
 
                     network-interface  ha-fabric
                         name               ha-fabric
@@ -398,7 +366,7 @@ let template = `config
                     name               sync-enp4s0
                     description        "HA state synchronization link"
                     type               ethernet
-                    pci-address        0000:04:00.0
+                    pci-address        0000:03:00.0
                     forwarding         false
 
                     network-interface  ha-sync
@@ -412,42 +380,10 @@ let template = `config
                     exit
                 exit
 
-                device-interface       msbr-enp5s0
-                    name               msbr-enp5s0
-                    description        "Internal interface between OSN and MSBR"
-                    type               ethernet
-                    pci-address        0000:05:00.0
-
-                    network-interface  msbr-mgmt
-                        name               msbr-mgmt
-                        type               external
-                        vlan               128
-                        tenant             ics-mgmt
-                        source-nat         true
-
-                        address            100.111.15.254
-                            ip-address     100.111.15.254
-                            prefix-length  20
-                        exit
-                    exit
-
-                    network-interface     msbr-vlan{{ model.MSBRVoiceVlan }}
-                        name                 LAN-vlan{{ model.MSBRVoiceVlan }}
-                        type                 external
-                        vlan                 {{ model.MSBRVoiceVlan }}
-                        tenant               voice.chs-site
-
-                        address              {{ model.MSBRVoiceAddr }}
-                            ip-address     {{ model.MSBRVoiceAddr }}
-                            prefix-length  {{ model.MSBRVoicePrefix }}
-                        exit
-                    exit
-                exit
-
                 device-interface  LTE-ATT
                     name               LTE-ATT
                     type               lte
-                    target-interface   wwp0s21f0u4i4
+                    target-interface   wwp0s21u4i4
 
                     lte
                         apn-name  {{ model.LTEnode2APN }}
@@ -549,7 +485,7 @@ let template = `config
 
                         address            100.111.0.1
                             ip-address        100.111.0.1
-                            gateway           {{ model.node2OSNLoopback }}
+                            gateway           {{ model.node2Loopback }}
                             prefix-length     20
                         exit
 
@@ -662,9 +598,9 @@ let template = `config
                exit
             exit
 
-            service-route     static-{{ model.node1Name }}-osn-mgmt
-                name          static-{{ model.node1Name }}-osn-mgmt
-                service-name  {{ model.node1Name }}-osn-mgmt
+            service-route     static-{{ model.node1Name }}-mgmt
+                name          static-{{ model.node1Name }}-mgmt
+                service-name  {{ model.node1Name }}-mgmt
 
                 next-hop      {{ model.node1Name }} loopback-mgmt
                         node-name  {{ model.node1Name }}
@@ -672,33 +608,13 @@ let template = `config
                 exit
             exit
 
-            service-route     static-{{ model.node2Name }}-osn-mgmt
-                name          static-{{ model.node2Name }}-osn-mgmt
-                service-name  {{ model.node2Name }}-osn-mgmt
+            service-route     static-{{ model.node2Name }}-mgmt
+                name          static-{{ model.node2Name }}-mgmt
+                service-name  {{ model.node2Name }}-mgmt
 
                 next-hop      {{ model.node2Name }} loopback-mgmt
                         node-name  {{ model.node2Name }}
                         interface  loopback-mgmt
-                exit
-            exit
-
-            service-route     static-{{ model.node1Name }}-msbr-mgmt
-                name          static-{{ model.node1Name }}-msbr-mgmt
-                service-name  {{ model.node1Name }}-msbr-mgmt
-
-                next-hop      {{ model.node1Name }} msbr-mgmt
-                        node-name  {{ model.node1Name }}
-                        interface  msbr-mgmt
-                exit
-            exit
-
-            service-route     static-{{ model.node2Name }}-msbr-mgmt
-                name          static-{{ model.node2Name }}-msbr-mgmt
-                service-name  {{ model.node2Name }}-msbr-mgmt
-
-                next-hop      {{ model.node2Name }} msbr-mgmt
-                        node-name  {{ model.node2Name }}
-                        interface  msbr-mgmt
                 exit
             exit
 
@@ -903,8 +819,8 @@ let template = `config
             share-service-routes  false
         exit
 
-        service  {{ model.node1Name }}-osn-mgmt
-            name           {{ model.node1Name }}-osn-mgmt
+        service  {{ model.node1Name }}-mgmt
+            name           {{ model.node1Name }}-mgmt
 
             applies-to       router
                 type         router
@@ -917,7 +833,7 @@ let template = `config
                 group-name  bdc
             exit
             security       service-sec
-            address        {{ model.node1OSNLoopback }}
+            address        {{ model.node1Loopback }}
 
             access-policy  ics-mgmt
                 source      ics-mgmt
@@ -925,8 +841,8 @@ let template = `config
             exit
         exit
 
-        service  {{ model.node2Name }}-osn-mgmt
-            name           {{ model.node2Name }}-osn-mgmt
+        service  {{ model.node2Name }}-mgmt
+            name           {{ model.node2Name }}-mgmt
 
             applies-to       router
                 type         router
@@ -939,49 +855,7 @@ let template = `config
                 group-name  bdc
             exit
             security       service-sec
-            address        {{ model.node2OSNLoopback }}
-
-            access-policy  ics-mgmt
-                source      ics-mgmt
-                permission  allow
-            exit
-        exit
-
-        service  {{ model.node1Name }}-msbr-mgmt
-            name           {{ model.node1Name }}-msbr-mgmt
-
-            applies-to       router
-                type         router
-                router-name  {{ model.routerName }}
-            exit
-
-            applies-to      router-group
-                type        router-group
-                group-name  nds-dc
-            exit
-            security       service-sec
-            address        {{ model.node1MSBRMgmt }}
-
-            access-policy  ics-mgmt
-                source      ics-mgmt
-                permission  allow
-            exit
-        exit
-
-        service  {{ model.node2Name }}-msbr-mgmt
-            name           {{ model.node2Name }}-msbr-mgmt
-
-            applies-to       router
-                type         router
-                router-name  {{ model.routerName }}
-            exit
-
-            applies-to      router-group
-                type        router-group
-                group-name  nds-dc
-            exit
-            security       service-sec
-            address        {{ model.node2MSBRMgmt }}
+            address        {{ model.node2Loopback }}
 
             access-policy  ics-mgmt
                 source      ics-mgmt
@@ -1026,13 +900,8 @@ var model = {
   prismaIPtunnelIP: '',
   prismaPSK: '',
   LTEnode2APN: '',
-  node1OSNLoopback: '',
-  node2OSNLoopback: '',
-  MSBRVoiceVlan: '',
-  MSBRVoiceAddr: '',
-  MSBRVoicePrefix: '',
+  node1Loopback: '',
+  node2Loopback: '',
   DNS1: '',
   DNS2: '',
-  node1MSBRMgmt: '',
-  node2MSBRMgmt: '',
 }

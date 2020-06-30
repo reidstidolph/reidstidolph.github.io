@@ -382,15 +382,12 @@ let template = `config
 
                 device-interface  LTE-ATT
                     name               LTE-ATT
-                    type               lte
-                    target-interface   wwp0s21u4i4
-
-                    lte
-                        apn-name  {{ model.LTEnode2APN }}
-                    exit
+                    type                  ethernet
+                    pci-address           0000:04:00.0
 
                     network-interface  lte-dhcp
                         name                   lte-dhcp
+                        type                 external
                         conductor            true
 
                         neighborhood           DC-Internet-LTE-01
@@ -899,7 +896,6 @@ var model = {
   dataIPBlock2: '',
   prismaIPtunnelIP: '',
   prismaPSK: '',
-  LTEnode2APN: '',
   node1Loopback: '',
   node2Loopback: '',
   DNS1: '',

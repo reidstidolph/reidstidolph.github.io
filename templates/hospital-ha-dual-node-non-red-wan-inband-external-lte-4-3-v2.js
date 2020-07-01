@@ -15,6 +15,7 @@ let template = `config
             location              "{{ model.siteAddress }}"
             location-coordinates  {{ model.siteCoordinates }}
             router-group          hospitals
+            maintenance-mode      true
             inter-node-security   encrypt-hmac-disabled
 
             system

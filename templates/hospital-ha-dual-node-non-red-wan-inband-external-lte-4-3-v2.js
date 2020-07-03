@@ -389,7 +389,6 @@ let template = `config
                     network-interface  lte-dhcp
                         name                   lte-dhcp
                         type                 external
-                        conductor            true
 
                         neighborhood           DC-Internet-LTE-01
                             name                DC-Internet-LTE-01
@@ -646,6 +645,28 @@ let template = `config
                service-route-policy  sessions-second
             exit
 
+            service-route  static-conductor3-backup
+               name          static-conductor3-backup
+               service-name  _conductor_3
+               service-route-policy  sessions-second
+
+               next-hop      {{ model.node2Name }} lte-dhcp
+                        node-name  {{ model.node2Name }}
+                        interface  lte-dhcp
+               exit
+            exit
+
+            service-route  static-conductor4-backup
+               name          static-conductor4-backup
+               service-name  _conductor_4
+               service-route-policy  sessions-second
+
+               next-hop      {{ model.node2Name }} lte-dhcp
+                        node-name  {{ model.node2Name }}
+                        interface  lte-dhcp
+               exit
+            exit
+            
             service-route-policy  sessions-first
                name          sessions-first
                description   "Highest Priority Path"

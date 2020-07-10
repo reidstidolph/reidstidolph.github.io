@@ -240,6 +240,11 @@ let template = `config
                             ip-address     169.254.253.2
                             prefix-length  30
                         exit
+
+                        ifcfg-option     ZONE
+                            name            ZONE
+                            value           trusted
+                        exit
                     exit
                 exit
 

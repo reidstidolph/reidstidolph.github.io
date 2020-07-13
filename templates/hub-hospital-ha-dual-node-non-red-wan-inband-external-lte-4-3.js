@@ -15,6 +15,7 @@ let template = `config
             location              "{{ model.siteAddress }}"
             location-coordinates  {{ model.siteCoordinates }}
             router-group          hospitals
+            router-group          hub-hospitals
             maintenance-mode      true
             inter-node-security   encrypt-hmac-disabled
 
@@ -49,10 +50,10 @@ let template = `config
                 name                    {{ model.node1Name }}
                 role                    combo
 
-                device-interface          AVPN1-ens3TBD
-                    name                  AVPN1-enp3TBD
+                device-interface          AVPN1-ens3f1
+                    name                  AVPN1-enp3f1
                     type                  ethernet
-                    pci-address           TBD
+                    pci-address           0000:09:00.1
 
                     traffic-engineering
                        enabled            true
@@ -245,10 +246,10 @@ let template = `config
                 name                    {{ model.node2Name }}
                 role                    combo
 
-                device-interface          ADI-ens3TBD
-                    name                  ADI-enp3TBD
+                device-interface          ADI-ens3f1
+                    name                  ADI-enp3f1
                     type                  ethernet
-                    pci-address           TBD
+                    pci-address           0000:09:00.1
 
                     traffic-engineering
                        enabled            true

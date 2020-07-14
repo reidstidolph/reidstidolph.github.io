@@ -509,6 +509,25 @@ let template = `config
                     exit
                 exit
 
+                device-interface       cradle-ens1f2
+                    name               cradle-ens1f2
+                    description        "Interface for Cradlepoint LTE system managment"
+                    type               ethernet
+                    pci-address        0000:08:00.2
+
+                    network-interface  cpt-mgmt
+                        name               cpt-mgmt
+                        type               external
+                        tenant             ics-mgmt
+                        source-nat         true
+
+                        address            100.111.253.1
+                            ip-address     100.111.253.1
+                            prefix-length  24
+                        exit
+                    exit
+                exit
+
                 device-interface         loopback
                     name                 loopback
                     type                 host
@@ -717,6 +736,16 @@ let template = `config
                 next-hop      {{ model.node2Name }} xcc-mgmt
                         node-name  {{ model.node2Name }}
                         interface  xcc-mgmt
+                exit
+            exit
+
+            service-route     static-{{ model.node2Name }}-cradlepoint-mgmt
+                name          static-{{ model.node2Name }}-cradlepoint-mgmt
+                service-name  {{ model.node2Name }}-cradlepoint-mgmt
+
+                next-hop      {{ model.node2Name }} cpt-mgmt
+                        node-name  {{ model.node2Name }}
+                        interface  cpt-mgmt
                 exit
             exit
 
@@ -1030,6 +1059,27 @@ let template = `config
                 permission  allow
             exit
         exit
+
+        service  {{ model.node2Name }}-cradlepoint-mgmt
+            name           {{ model.node2Name }}-cradlepoint-mgmt
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
+            exit
+
+            applies-to      router-group
+                type        router-group
+                group-name  nds-dc
+            exit
+            security       service-sec
+            address        {{ model.node2CradlepointMgmt }}
+
+            access-policy  ics-mgmt
+                source      ics-mgmt
+                permission  allow
+            exit
+        exit
     exit
 exit`
 
@@ -1073,4 +1123,5 @@ var model = {
   DNS2: '',
   node1XCCMgmt: '',
   node2XCCMgmt: '',
+  node2CradlepointMgmt: '',
 }

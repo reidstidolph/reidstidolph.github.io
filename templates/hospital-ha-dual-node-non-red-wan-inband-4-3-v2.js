@@ -393,50 +393,6 @@ let template = `config
                     network-interface  lte-dhcp
                         name                   lte-dhcp
 
-                        neighborhood           DC-Internet-LTE-01
-                            name                DC-Internet-LTE-01
-                            peer-connectivity   outbound-only
-                            vector              LTE-01
-
-                            bfd
-                                state                     enabled
-                                desired-tx-interval       60000
-                                required-min-rx-interval  60000
-                                link-test-interval        120
-                                link-test-length          0
-                            exit
-
-                            udp-transform
-                                mode  always-transform
-                            exit
-
-                            path-mtu-discovery
-                                enabled  true
-                            exit
-                        exit
-
-                        neighborhood           DC-Internet-LTE-02
-                            name                DC-Internet-LTE-02
-                            peer-connectivity   outbound-only
-                            vector              LTE-02
-
-                            bfd
-                                state                     enabled
-                                desired-tx-interval       60000
-                                required-min-rx-interval  60000
-                                link-test-interval        120
-                                link-test-length          0
-                            exit
-
-                            udp-transform
-                                mode  always-transform
-                            exit
-
-                            path-mtu-discovery
-                                enabled  true
-                            exit
-                        exit
-
                         neighborhood         {{ model.routerName }}-LTE-Internet
                             name                {{ model.routerName }}-LTE-Internet
                             topology            hub
@@ -578,6 +534,48 @@ let template = `config
             service-route  sfc-prisma-chs-internet
                 name          sfc-prisma-chs-internet
                 service-name  chs-internet
+
+                next-hop      {{ model.node2Name }} prisma-srv-intf
+                        node-name   {{ model.node2Name }}
+                        interface   prisma-srv-intf
+                        gateway-ip  169.254.129.6
+                exit
+                service-route-policy  sessions-first
+            exit
+
+            service-route  svr-bdc-prisma-Athena
+                name          svr-bdc-prisma-Athena
+                service-name  Athena
+                generated     false
+                next-peer     BHMAL1-P-SDW-01
+                next-peer     BHMAL1-P-SDW-02
+                service-route-policy  sessions-second
+            exit
+
+            service-route  sfc-prisma-Athena
+                name          sfc-prisma-Athena
+                service-name  Athena
+
+                next-hop      {{ model.node2Name }} prisma-srv-intf
+                        node-name   {{ model.node2Name }}
+                        interface   prisma-srv-intf
+                        gateway-ip  169.254.129.6
+                exit
+                service-route-policy  sessions-first
+            exit
+
+            service-route  svr-bdc-prisma-Vidistar
+                name          svr-bdc-prisma-Vidistar
+                service-name  Vidistar
+                generated     false
+                next-peer     BHMAL1-P-SDW-01
+                next-peer     BHMAL1-P-SDW-02
+                service-route-policy  sessions-second
+            exit
+
+            service-route  sfc-prisma-Vidistar
+                name          sfc-prisma-Vidistar
+                service-name  Vidistar
 
                 next-hop      {{ model.node2Name }} prisma-srv-intf
                         node-name   {{ model.node2Name }}

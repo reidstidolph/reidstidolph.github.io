@@ -52,7 +52,7 @@ let template = `config
                 device-interface          AVPN1-enp1s0
                     name                  AVPN1-enp1s0
                     type                  ethernet
-                    pci-address           0000:02:00.1
+                    pci-address           0000:04:00.0
                     link-settings         100Mbps-full
 
                     traffic-engineering
@@ -224,7 +224,7 @@ let template = `config
                 device-interface          ADI-enp1s0
                     name                  ADI-enp1s0
                     type                  ethernet
-                    pci-address           0000:02:00.1
+                    pci-address           0000:04:00.0
                     link-settings         100Mbps-full
 
                     traffic-engineering
@@ -389,6 +389,7 @@ let template = `config
                     lte
                         apn-name  {{ model.LTEnode2APN }}
                     exit
+                    enabled            false
 
                     network-interface  lte-dhcp
                         name                   lte-dhcp

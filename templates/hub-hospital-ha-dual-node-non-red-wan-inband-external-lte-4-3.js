@@ -97,7 +97,7 @@ let template = `config
                  device-interface         LAN-eno2
                     name                  LAN-eno2
                     type                  ethernet
-                    pci-address           0000:b0:00.3
+                    pci-address           {{ model.lanPCI }}
                     shared-phys-address   {{ model.lanSharedMAC }}
 
                     network-interface     LAN-vlan2020
@@ -322,7 +322,7 @@ let template = `config
                  device-interface         LAN-eno2
                     name                  LAN-eno2
                     type                  ethernet
-                    pci-address           0000:b0:00.3
+                    pci-address           {{ model.lanPCI }}
                     shared-phys-address   {{ model.lanSharedMAC }}
 
                     network-interface     LAN-vlan2020
@@ -565,8 +565,8 @@ let template = `config
                     exit
                 exit
 
-                ipsec-client        {{ model.routerName }}
-                    name            {{ model.routerName }}
+                ipsec-client        prisma-site
+                    name            prisma-site
                     enabled         true
                     tenant          sfc-palo
 
@@ -578,6 +578,26 @@ let template = `config
                     exit
                     plugin-network  169.254.129.0/28
                 exit
+            exit
+
+            redundancy-group     {{ model.node1Name }}-RG
+                name             {{ model.node1Name }}-RG
+
+                member           {{ model.node1Name }} LAN-eno2
+                    node         {{ model.node1Name }}
+                    device-id    LAN-eno2
+                exit
+                priority         50
+            exit
+
+            redundancy-group     {{ model.node2Name }}-RG
+                name             {{ model.node2Name }}-RG
+
+                member           {{ model.node2Name }} LAN-eno2
+                    node         {{ model.node2Name }}
+                    device-id    LAN-eno2
+                exit
+                priority         100
             exit
 
             service-route     local-{{ model.routerName }}-LAN-summary
@@ -1130,6 +1150,7 @@ var model = {
   wanAddr2: '',
   wanPrefix2: '',
   wanGw2: '',
+  lanPCI: '',
   lanSharedMAC: '',
   lanAddr: '',
   lanPrefix: '',

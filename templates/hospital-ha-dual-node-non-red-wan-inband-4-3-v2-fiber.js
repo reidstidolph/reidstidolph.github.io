@@ -481,7 +481,7 @@ let template = `config
 
                 member           {{ model.node1Name }} LAN-enp2s0
                     node         {{ model.node1Name }}
-                    device-id    LAN-eno2
+                    device-id    LAN-enp2s0
                 exit
                 priority         50
             exit
@@ -491,7 +491,7 @@ let template = `config
 
                 member           {{ model.node2Name }} LAN-enp2s0
                     node         {{ model.node2Name }}
-                    device-id    LAN-eno2
+                    device-id    LAN-enp2s0
                 exit
                 priority         100
             exit

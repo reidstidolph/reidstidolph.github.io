@@ -14,6 +14,7 @@ let template = `config
             name                  {{ model.routerName }}
             location              "{{ model.siteAddress }}"
             location-coordinates  {{ model.siteCoordinates }}
+            description           "{{ model.siteDescription }}"
             router-group          hospitals
             maintenance-mode      true
             inter-node-security   encrypt-hmac-disabled
@@ -57,7 +58,7 @@ let template = `config
                     traffic-engineering
                        enabled            true
                        transmit-cap       95000000
-                       traffic-profile    AVPN-Profile
+                       traffic-profile    AVPN-22717
                     exit
 
                     network-interface     AVPN1-vlan{{ model.wanVlan1 }}
@@ -940,6 +941,7 @@ var model = {
   routerName: '',
   siteAddress: '',
   siteCoordinates: '',
+  siteDescription: '',
   ntp1: '',
   ntp2: '',
   trapServer1: '',

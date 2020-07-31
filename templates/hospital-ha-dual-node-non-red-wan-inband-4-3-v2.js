@@ -763,6 +763,7 @@ let template = `config
             applies-to      router-group
                 type        router-group
                 group-name  bdc
+                group-name  cer
             exit
             security       service-sec
 
@@ -804,6 +805,7 @@ let template = `config
             applies-to      router-group
                 type        router-group
                 group-name  bdc
+                group-name  cer
             exit
             security       service-sec
 

@@ -97,7 +97,7 @@ let template = `config
 
                         management-vector
                             name      wan2-mgmt
-                            priority  10
+                            priority  20
                         exit
 
                         address              {{ model.wanAddr2 }}

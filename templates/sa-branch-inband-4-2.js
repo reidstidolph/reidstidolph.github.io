@@ -186,7 +186,7 @@ let template = `config
                 source               {{ model.lanTenant }}
             exit
 
-            access-policy         {{ model.lanTenant }}
+            access-policy         _internal_
                 source               _internal_
             exit
 

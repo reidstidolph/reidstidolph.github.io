@@ -173,10 +173,6 @@ let template = `config
                 source               {{ model.lanTenant }}
             exit
 
-            access-policy         {{ model.lanTenant }}
-                source               _internal_
-            exit
-
             service-policy        {{ model.wanVector1 }}-{{ model.wanVector2 }}-no-failover
             share-service-routes  false
         exit

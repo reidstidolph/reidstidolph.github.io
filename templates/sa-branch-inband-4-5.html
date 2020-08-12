@@ -37,8 +37,10 @@
             <v-text-field label="Router Name" v-model="model.routerName" regular></v-text-field>
             <v-text-field label="Site Address" v-model="model.siteAddress" regular></v-text-field>
             <v-text-field label="Site Coordinates" v-model="model.siteCoordinates" regular></v-text-field>
-            <v-text-field label="NTP Server1" v-model="model.ntp1" regular></v-text-field>
-            <v-text-field label="NTP Server2" v-model="model.ntp2" regular></v-text-field>
+            <v-text-field label="Management NTP Server1" v-model="model.ntp1" regular></v-text-field>
+            <v-text-field label="Management NTP Server2" v-model="model.ntp2" regular></v-text-field>
+            <v-text-field label="Managment DNS1" v-model="model.DNS1" regular></v-text-field>
+            <v-text-field label="Managment DNS2" v-model="model.DNS2" regular></v-text-field>
             <v-text-field label="Node Name" v-model="model.nodeName" regular></v-text-field>
             <v-text-field label="WAN1 VLAN" v-model="model.wanVlan1" regular></v-text-field>
             <v-text-field label="WAN1 Device PCI Address" v-model="model.wanPciAddr1" regular></v-text-field>
@@ -57,10 +59,6 @@
             <v-text-field label="LAN IP Address" v-model="model.lanAddr" regular></v-text-field>
             <v-text-field label="LAN Prefix" v-model="model.lanPrefix" reagular></v-text-field>
             <v-text-field label="LAN Tenant" v-model="model.lanTenant" regular></v-text-field>
-            <v-text-field label="Loopback Managment IP Address" v-model="model.loAddress" regular></v-text-field>
-            <v-text-field label="Loopback Managment Gateway" v-model="model.loGateway" regular></v-text-field>
-            <v-text-field label="Loopback Managment DNS1" v-model="model.DNS1" regular></v-text-field>
-            <v-text-field label="Loopback Managment DNS2" v-model="model.DNS2" regular></v-text-field>
           <v-container>
         </v-form>
       </v-navigation-drawer>

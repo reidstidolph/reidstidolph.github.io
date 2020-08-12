@@ -214,6 +214,8 @@ var model = {
   siteCoordinates: '',
   ntp1: '',
   ntp2: '',
+  DNS1: '',
+  DNS2: '',
   nodeName: '',
   wanVlan1: '',
   wanPciAddr1: '',
@@ -232,8 +234,4 @@ var model = {
   lanAddr: '',
   lanPrefix: '',
   lanTenant: '',
-  loAddress: '',
-  loGateway: '',
-  DNS1: '',
-  DNS2: '',
 }

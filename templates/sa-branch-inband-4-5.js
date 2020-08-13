@@ -84,13 +84,7 @@ let template = `config
                         type                 external
                         vlan                 {{ model.wanVlan2 }}
                         conductor            true
-                        management           true
 
-                        neighborhood         WAN2
-                            name                WAN2
-                            topology            spoke
-                            vector              {{ model.wanVector2 }}
-                        exit
                         inter-router-security   peer-sec
                         source-nat           true
                         management           true

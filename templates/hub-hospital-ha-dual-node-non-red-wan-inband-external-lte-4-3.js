@@ -38,6 +38,16 @@ let template = `config
                         enabled                true
                         port                   162
 
+                        access-control         NDS_Polling
+                            name       NDS_Polling
+                            community  NDSSNMPRO
+                        exit
+
+                        access-control         Internal_Proxy
+                            name       Internal_Proxy
+                            community  INTERNALPROXY
+                        exit
+
                         notification-receiver  {{ model.trapServer1 }} 162 trap
                             ip-address  {{ model.trapServer1 }}
                             port        162
@@ -896,6 +906,7 @@ let template = `config
                 type        router-group
                 group-name  bdc
                 group-name  cer
+                group-name  corp
             exit
             security       service-sec
 
@@ -938,6 +949,7 @@ let template = `config
                 type        router-group
                 group-name  bdc
                 group-name  cer
+                group-name  corp
             exit
             security       service-sec
 
@@ -987,6 +999,7 @@ let template = `config
                 group-name  clinics
                 group-name  hospitals
                 group-name  bdc
+                group-name  corp
             exit
             security       encrypt-hmac-disabled
             address        0.0.0.0/0
@@ -1006,6 +1019,7 @@ let template = `config
                 type        router-group
                 group-name  clinics
                 group-name  hospitals
+                group-name  corp
             exit
 
             security       encrypt-hmac-disabled

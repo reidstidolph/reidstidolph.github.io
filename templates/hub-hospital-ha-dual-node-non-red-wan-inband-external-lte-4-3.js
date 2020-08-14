@@ -196,8 +196,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface       xcc-mgmt-eno3
-                    name               xcc-mgmt-eno3
+                device-interface       xcc-mgt-eno3
+                    name               xcc-mgt-eno3
                     description        "Interface for Lenovo XCC managment of other node"
                     type               ethernet
                     pci-address        0000:b0:00.0
@@ -501,8 +501,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface       xcc-mgmt-eno3
-                    name               xcc-mgmt-eno3
+                device-interface       xcc-mgt-eno3
+                    name               xcc-mgt-eno3
                     description        "Interface for Lenovo XCC managment of other node"
                     type               ethernet
                     pci-address        0000:b0:00.0
@@ -520,8 +520,8 @@ let template = `config
                     exit
                 exit
 
-                device-interface       cradle-ens1f2
-                    name               cradle-ens1f2
+                device-interface       crad-ens1f2
+                    name               crad-ens1f2
                     description        "Interface for Cradlepoint LTE system managment"
                     type               ethernet
                     pci-address        0000:08:00.2

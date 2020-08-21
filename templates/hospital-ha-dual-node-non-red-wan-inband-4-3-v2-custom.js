@@ -780,12 +780,37 @@ let template = `config
             exit
             security       service-sec
 
-            transport       tcp
-                protocol  tcp
+            transport             tcp
+                protocol    tcp
+
+                port-range  0
+                    start-port  0
+                    end-port    21
+                exit
+
+                port-range  23
+                    start-port  23
+                    end-port    3388
+                exit
+
+                port-range  3390
+                    start-port  3390
+                    end-port    65535
+                exit
             exit
 
-            transport       udp
-                protocol  udp
+            transport             udp
+                protocol    udp
+
+                port-range  0
+                    start-port  0
+                    end-port    160
+                exit
+
+                port-range  162
+                    start-port  162
+                    end-port    65535
+                exit
             exit
 
             transport       icmp

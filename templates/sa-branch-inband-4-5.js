@@ -62,7 +62,7 @@ let template = `config
                         management           true
 
                         management-vector
-                            name      wan1-mgmt
+                            name      {{ model.wanVector1 }}
                             priority  10
                         exit
 
@@ -85,12 +85,17 @@ let template = `config
                         vlan                 {{ model.wanVlan2 }}
                         conductor            true
 
+                        neighborhood         WAN2
+                            name                WAN2
+                            topology            spoke
+                            vector              {{ model.wanVector2 }}
+                        exit
                         inter-router-security   peer-sec
                         source-nat           true
                         management           true
 
                         management-vector
-                            name      wan2-mgmt
+                            name      {{ model.wanVector2 }}
                             priority  20
                         exit
 

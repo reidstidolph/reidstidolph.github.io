@@ -76,6 +76,7 @@ let template = `config
                         name                 AVPN1-{{ model.wanVlan1 }}
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
+                        conductor            true
 
                         neighborhood         DC-MPLS-01
                             name                DC-MPLS-01
@@ -645,6 +646,23 @@ let template = `config
                 exit
             exit
 
+            service-route     local-{{ model.routerName }}-citrix-hub
+                name          local-{{ model.routerName }}-citrix-hub
+                service-name  {{ model.routerName }}-citrix-hub
+
+                next-hop      {{ model.node1Name }} LAN-vlan2020
+                        node-name   {{ model.node1Name }}
+                        interface   LAN-vlan2020
+                        gateway-ip  {{ model.lanGw }}
+                exit
+
+                next-hop      {{ model.node2Name }} LAN-vlan2020
+                        node-name   {{ model.node1Name }}
+                        interface   LAN-vlan2020
+                        gateway-ip  {{ model.lanGw }}
+                exit
+            exit
+
             service-route  static-prisma-ipsec
                 name          static-prisma-ipsec
                 service-name  prisma-ipsec
@@ -879,6 +897,9 @@ let template = `config
                connection-lifetime      16h
                compress                 false
                perfect-forward-secrecy  false
+               dpddelay                 30
+               dpdtimeout               60
+               dpdaction                restart
                local-id                 {{ model.wanAddr2 }}
                pre-shared-key           {{ model.prismaPSK }}
             exit
@@ -989,6 +1010,48 @@ let template = `config
             exit
             service-policy        Mission-Critical-MPLS
             share-service-routes  false
+        exit
+
+        service  {{ model.routerName }}-citrix-hub
+            name           {{ model.routerName }}-citrix-hub
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
+            exit
+            security       service-sec
+
+            transport       tcp
+                protocol    tcp
+
+                port-range  80
+                    start-port  80
+                    end-port    80
+                exit
+
+                port-range  443
+                    start-port  443
+                    end-port    443
+                exit
+
+                port-range  1494
+                    start-port  1494
+                    end-port    1494
+                exit
+
+                port-range  2598
+                    start-port  2598
+                    end-port    2598
+                exit
+            exit
+            address        {{ model.citrixIPBlock1 }}
+
+            access-policy   chs-site
+                source      chs-site
+                permission  allow
+            exit
+            service-policy        Mission-Critical-MPLS
+            share-service-routes  true
         exit
 
         service  chs-internet
@@ -1175,6 +1238,7 @@ var model = {
   lanGw: '',
   dataIPBlock1: '',
   dataIPBlock2: '',
+  citrixIPBlock1: '',
   prismaIPtunnelIP: '',
   prismaPSK: '',
   node1Loopback: '',

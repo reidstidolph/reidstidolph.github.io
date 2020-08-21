@@ -75,6 +75,7 @@ let template = `config
                         name                 AVPN1-{{ model.wanVlan1 }}
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
+                        conductor            true
 
                         neighborhood         DC-MPLS-01
                             name                DC-MPLS-01
@@ -745,6 +746,9 @@ let template = `config
                connection-lifetime      16h
                compress                 false
                perfect-forward-secrecy  false
+               dpddelay                 30
+               dpdtimeout               60
+               dpdaction                restart
                local-id                 {{ model.wanAddr2 }}
                pre-shared-key           {{ model.prismaPSK }}
             exit

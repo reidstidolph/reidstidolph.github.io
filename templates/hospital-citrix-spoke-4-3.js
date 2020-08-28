@@ -48,7 +48,7 @@ let template = `config
 
             applies-to       router
                 type         router
-                router-name  {{ model.hubRouterName }}
+                router-name  {{ model.routerName }}
             exit
         exit
     exit

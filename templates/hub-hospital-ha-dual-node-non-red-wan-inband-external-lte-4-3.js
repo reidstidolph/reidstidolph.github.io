@@ -36,7 +36,7 @@ let template = `config
 
                     snmp-server
                         enabled                true
-                        port                   162
+                        port                   161
 
                         access-control         NDS_Polling
                             name       NDS_Polling
@@ -52,6 +52,7 @@ let template = `config
                             ip-address  {{ model.trapServer1 }}
                             port        162
                             type        trap
+                            community   NDSSNMPRO
                         exit
                     exit
                 exit

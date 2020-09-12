@@ -90,14 +90,14 @@ let template = `config
                             topology           spoke
                             vector             MPLS-02
                         exit
-                        inter-router-security   peer-sec
-                        source-nat           true
 
                         neighborhood         {{ model.routerName }}-MPLS
                             name                {{ model.routerName }}-MPLS
                             topology            hub
                             vector              MPLS-01
                         exit
+                        inter-router-security   peer-sec
+                        source-nat           true
 
                         address              {{ model.wanAddr1 }}
                             ip-address     {{ model.wanAddr1 }}
@@ -414,6 +414,11 @@ let template = `config
                         address            169.254.253.2
                             ip-address     169.254.253.2
                             prefix-length  30
+                        exit
+
+                        ifcfg-option     ZONE
+                            name            ZONE
+                            value           trusted
                         exit
                     exit
                 exit

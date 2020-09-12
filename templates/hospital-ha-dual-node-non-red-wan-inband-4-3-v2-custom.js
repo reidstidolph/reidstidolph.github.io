@@ -65,6 +65,7 @@ let template = `config
                     name                  AVPN1-enp1s0
                     type                  ethernet
                     pci-address           {{ model.wanPCI1 }}
+                    link-settings         {{ model.wanDuplex1 }}
 
                     traffic-engineering
                        enabled            true
@@ -88,6 +89,12 @@ let template = `config
                             name               DC-MPLS-02
                             topology           spoke
                             vector             MPLS-02
+                        exit
+
+                        neighborhood         {{ model.routerName }}-MPLS
+                            name                {{ model.routerName }}-MPLS
+                            topology            hub
+                            vector              MPLS-01
                         exit
                         inter-router-security   peer-sec
                         source-nat           true
@@ -237,6 +244,7 @@ let template = `config
                     name                  ADI-enp1s0
                     type                  ethernet
                     pci-address           {{ model.wanPCI2 }}
+                    link-settings         {{ model.wanDuplex2 }}
 
                     traffic-engineering
                        enabled            true
@@ -388,6 +396,11 @@ let template = `config
                         address            169.254.253.2
                             ip-address     169.254.253.2
                             prefix-length  30
+                        exit
+
+                        ifcfg-option     ZONE
+                            name            ZONE
+                            value           trusted
                         exit
                     exit
                 exit
@@ -994,11 +1007,13 @@ var model = {
   node1Name: '',
   node2Name: '',
   wanPCI1: '',
+  wanDuplex1: '',
   wanVlan1: '',
   wanAddr1: '',
   wanPrefix1: '',
   wanGw1: '',
   wanPCI2: '',
+  wanDuplex2: '',
   wanVlan2: '',
   wanAddr2: '',
   wanPrefix2: '',

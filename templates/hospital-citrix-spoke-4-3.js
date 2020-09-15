@@ -18,8 +18,8 @@ let template = `config
 
                     network-interface     AVPN1-vlan{{ model.wanVlan1 }}
 
-                        neighborhood         {{ model.routerName }}-MPLS
-                            name                {{ model.routerName }}-MPLS
+                        neighborhood         {{ model.hubRouterName }}-MPLS
+                            name                {{ model.hubRouterName }}-MPLS
                             topology            spoke
                             vector              MPLS-01
                         exit
@@ -33,8 +33,8 @@ let template = `config
 
                     network-interface     ADI-vlan{{ model.wanVlan2 }}
 
-                        neighborhood         {{ model.routerName }}-Internet-Broadband
-                            name                {{ model.routerName }}-Internet-Broadband
+                        neighborhood         {{ model.hubRouterName }}-Internet-Broadband
+                            name                {{ model.hubRouterName }}-Internet-Broadband
                             topology            spoke
                             vector              Broadband-01
                         exit

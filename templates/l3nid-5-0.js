@@ -139,7 +139,7 @@ let template = `config
                 next-hop      {{ model.nodeName }} provider
                     node-name   128t-customer-premises-node1
                     interface   provider
-                    gateway-ip  {{ model.providerGateway1 }}
+                    gateway-ip  {{ model.providerGw1 }}
                 exit
             exit
 
@@ -221,7 +221,7 @@ let template = `config
                 group-name  datacenter
             exit
             security       service-sec
-            address        {{ model.LoopbackIP }}
+            address        {{ model.loopbackIP }}
 
             access-policy  {{ model.datacenterTenant }}
                 source      {{ model.datacenterTenant }}

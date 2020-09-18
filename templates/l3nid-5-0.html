@@ -41,19 +41,19 @@
             <v-text-field label="DNS Server1 IP" v-model="model.DNS1" regular></v-text-field>
             <v-text-field label="DNS Server2 IP" v-model="model.DNS2" regular></v-text-field>
             <v-text-field label="Monitoring Agent Datacenter Server IP" v-model="model.monAgentIP" regular></v-text-field>
-            <v-text-field label="L3NID License Bandidth (Mb)" v-model="licenseBW" regular></v-text-field>
-            <v-text-field label="L3NID License Bandidth (Mb)" v-model="licenseBitsBW" regular></v-text-field>
-            <v-text-field label="L3NID License Expires Date ()" v-model="licenseExpires" regular></v-text-field>
+            <v-text-field label="L3NID License Bandidth (Mb)" v-model="model.licenseBW" regular></v-text-field>
+            <v-text-field label="L3NID License Bandidth (bits)" v-model="model.licenseBitsBW" regular></v-text-field>
+            <v-text-field label="L3NID License Expires Date (DD_MM_YYYY)" v-model="model.licenseExpires" regular></v-text-field>
             <v-text-field label="Node Name" v-model="model.nodeName" regular></v-text-field>
             <v-text-field label="Provider Interface PCI Address" v-model="model.providerPciAddr1" regular></v-text-field>
             <v-text-field label="Customer Interface PCI Address" v-model="model.customerPciAddr1" regular></v-text-field>
             <v-text-field label="Customer IP Address" v-model="model.customerAddr1" regular></v-text-field>
             <v-text-field label="Provider IP Prefix" v-model="model.providerPrefix1" reagular></v-text-field>
             <v-text-field label="Provider IP Gateway" v-model="model.providerGw1" regular></v-text-field>
-            <v-text-field label="Datacenter Tenant Name for Remote Management" v-model="datacenterTenant" regular></v-text-field>
-            <v-text-field label="Router Remote Managment IP Address" v-model="loopbackIP" regular></v-text-field>
-            <v-text-field label="Router Remote Managment IP Prefix" v-model="loopbackPrefix" regular></v-text-field>
-            <v-text-field label="Router Remote Managment IP Gateway" v-model="loopbackGw" regular></v-text-field>
+            <v-text-field label="Datacenter Tenant Name for Remote Management" v-model="model.datacenterTenant" regular></v-text-field>
+            <v-text-field label="Router Remote Managment IP Address" v-model="model.loopbackIP" regular></v-text-field>
+            <v-text-field label="Router Remote Managment IP Prefix" v-model="model.loopbackPrefix" regular></v-text-field>
+            <v-text-field label="Router Remote Managment IP Gateway" v-model="model.loopbackGw" regular></v-text-field>
           <v-container>
         </v-form>
       </v-navigation-drawer>

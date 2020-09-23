@@ -59,6 +59,7 @@ let template = `config
                         name                 provider
                         type                 external
                         conductor            true
+                        default-route        true
 
                         neighborhood         l3nid-management
                             name                l3nid-management

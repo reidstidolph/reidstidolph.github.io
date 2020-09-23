@@ -51,6 +51,7 @@ let template = `config
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
                         conductor            true
+                        default-route        true
 
                         neighborhood         WAN1
                             name                WAN1

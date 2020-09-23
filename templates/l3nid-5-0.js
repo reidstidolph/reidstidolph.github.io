@@ -122,7 +122,7 @@ let template = `config
                 exit
             exit
 
-            service-route                       static-inbound-route
+            service-route     static-inbound-route
                 name          static-inbound-route
                 service-name  l3nid-inbound
 
@@ -133,7 +133,7 @@ let template = `config
                 exit
             exit
 
-            service-route                       static-outbound-route
+            service-route     static-outbound-route
                 name          static-outbound-route
                 service-name  l3nid-outbound
 
@@ -149,9 +149,24 @@ let template = `config
                 service-name  {{ model.routerName }}-mgmt
 
                 next-hop      {{ model.node1Name }} loopback-mgmt
-                        node-name  {{ model.node1Name }}
-                        interface  loopback-mgmt
+                    node-name  {{ model.node1Name }}
+                    interface  loopback-mgmt
                 exit
+            exit
+
+            dns-cache
+                enabled          true
+                addresses        {{ model.DNS1 }}
+                addresses        {{ model.DNS2 }}
+                tenant           _internal_
+                ingress-service  l3nid-internal-dns
+            exit
+
+            dns-app-id
+                enabled       true
+                builtin-apps  gmail
+                builtin-apps  google-drive
+                builtin-apps  windows-update
             exit
         exit
 
@@ -194,19 +209,48 @@ let template = `config
             name                  l3nid-outbound
             security              encrypt-hmac-disabled
             address               0.0.0.0/0
+            generate-categories   true
 
             access-policy         customer
                 source            customer
+                source            _internal_
             exit
             share-service-routes  false
         exit
 
-        service            M365.internet
-            name              M365.internet
+        service            M365-Common.l3nid-outbound
+            name              M365-Common.l3nid-outbound
             application-name  O365-Common
+        exit
+
+        service            M365-Exchange.l3nid-outbound
+            name              M365-Exchange.l3nid-outbound
             application-name  O365-Exchange
+        exit
+
+        service            M365-SharePoint.l3nid-outbound
+            name              M365-SharePoint.l3nid-outbound
             application-name  O365-SharePoint
+        exit
+
+        service            M365-Skype.l3nid-outbound
+            name              M365-Skype.l3nid-outbound
             application-name  O365-Skype
+        exit
+
+        service            gmail.l3nid-outbound
+            name              gmail.l3nid-outbound
+            application-name  gmail
+        exit
+
+        service            google-drive.l3nid-outbound
+            name              google-drive.l3nid-outbound
+            application-name  google-drive
+        exit
+
+        service            windows-update.l3nid-outbound
+            name              windows-update.l3nid-outbound
+            application-name  windows-update
         exit
 
         service  {{ model.routerName }}-mgmt
@@ -225,7 +269,32 @@ let template = `config
             address        {{ model.loopbackIP }}
 
             access-policy  {{ model.datacenterTenant }}
-                source      {{ model.datacenterTenant }}
+                source     {{ model.datacenterTenant }}
+            exit
+        exit
+
+        service  {{ model.routerName }}-internal-dns
+            name           {{ model.routerName }}-internal-dns
+
+            applies-to       router
+                type         router
+                router-name  {{ model.routerName }}
+            exit
+
+            security       encrypt-hmac-disabled
+
+            transport      udp
+                protocol   udp
+
+                port-range      53
+                    start-port  53
+                exit
+            exit
+            address        {{ model.DNS1 }}/32
+            address        {{ model.DNS2 }}/32
+
+            access-policy  _internal_
+                source     _internal_
             exit
         exit
 
@@ -235,7 +304,7 @@ let template = `config
             address        {{ model.monAgentIP }}
 
             access-policy  _internal_
-                source      _internal_
+                source     _internal_
             exit
         exit
     exit

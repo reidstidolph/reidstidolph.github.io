@@ -11,8 +11,8 @@ let template = `config
     authority
         conductor-address  {{ model.conductorAddr1 }}
 
-        router       L3NID-{{ model.routerName }}
-            name                  L3NID-{{ model.routerName }}
+        router       l3nid-{{ model.routerName }}
+            name                  l3nid-{{ model.routerName }}
             location              "{{ model.siteAddress }}"
             location-coordinates  {{ model.siteCoordinates }}
             inter-node-security   encrypt-hmac-disabled
@@ -60,6 +60,7 @@ let template = `config
                         type                 external
                         conductor            true
                         default-route        true
+                        tenant               provider
 
                         neighborhood         l3nid-management
                             name                l3nid-management
@@ -159,7 +160,7 @@ let template = `config
                 addresses        {{ model.DNS1 }}
                 addresses        {{ model.DNS2 }}
                 tenant           _internal_
-                ingress-service  l3nid-internal-dns
+                ingress-service  {{ model.routerName }}-internal-dns
             exit
 
             dns-app-id
@@ -192,6 +193,10 @@ let template = `config
 
         tenant  customer
             name      customer
+        exit
+
+        tenant  provider
+            name      provider
         exit
 
         service            l3nid-inbound
@@ -258,7 +263,7 @@ let template = `config
 
             applies-to       router
                 type         router
-                router-name  {{ model.routerName }}
+                router-name  l3nid-{{ model.routerName }}
             exit
 
             applies-to      router-group
@@ -278,7 +283,7 @@ let template = `config
 
             applies-to       router
                 type         router
-                router-name  {{ model.routerName }}
+                router-name  l3nid-{{ model.routerName }}
             exit
 
             security       encrypt-hmac-disabled

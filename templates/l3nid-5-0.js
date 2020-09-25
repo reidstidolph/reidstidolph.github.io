@@ -138,7 +138,7 @@ let template = `config
                 service-name  l3nid-outbound
 
                 next-hop      {{ model.nodeName }} provider
-                    node-name   128t-customer-premises-node1
+                    node-name   {{ model.nodeName }}
                     interface   provider
                     gateway-ip  {{ model.providerGw1 }}
                 exit
@@ -148,8 +148,8 @@ let template = `config
                 name          static-{{ model.routerName }}-mgmt
                 service-name  {{ model.routerName }}-mgmt
 
-                next-hop      {{ model.node1Name }} loopback-mgmt
-                    node-name  {{ model.node1Name }}
+                next-hop      {{ model.nodeName }} loopback-mgmt
+                    node-name  {{ model.nodeName }}
                     interface  loopback-mgmt
                 exit
             exit

@@ -33,6 +33,15 @@ let template = `config
                 mode    module
             exit
 
+            nat-pool          l3-internal-mgmt-egress-pool
+                name          l3-internal-mgmt-egress-pool
+
+                address-pool  {{ model.customerAddr1 }}/32
+                    address      {{ model.customerAddr1 }}/32
+                    tenant-name  _internal_
+                exit
+            exit
+
             system
                 ntp
 
@@ -75,11 +84,12 @@ let template = `config
                             priority  10
                         exit
 
-                        address              {{ model.customerAddr1 }}
-                            ip-address     {{ model.customerAddr1 }}
-                            prefix-length  {{ model.providerPrefix1 }}
-                            gateway        {{ model.providerGw1 }}
+                        address            {{ model.customerAddr1 }}
+                            ip-address        {{ model.customerAddr1 }}
+                            prefix-length     {{ model.providerPrefix1 }}
+                            gateway           {{ model.providerGw1 }}
                         exit
+                        egress-source-nat-pool  l3-internal-mgmt-egress-pool
                     exit
                  exit
 
@@ -93,9 +103,9 @@ let template = `config
                         type                 external
                         tenant               customer
 
-                        address              {{ model.providerGw1 }}
-                            ip-address     {{ model.providerGw1 }}
-                            prefix-length  {{ model.providerPrefix1 }}
+                        address            {{ model.providerGw1 }}
+                            ip-address        {{ model.providerGw1 }}
+                            prefix-length     {{ model.providerPrefix1 }}
                         exit
                     exit
                 exit
@@ -106,7 +116,6 @@ let template = `config
 
                     network-interface    loopback-mgmt
                         name                 loopback-mgmt
-                        default-route        true
                         tenant               {{ model.datacenterTenant }}
 
                         address            {{ model.loopbackGw }}

@@ -75,6 +75,10 @@ let template = `config
                             name                l3nid-management
                             topology            spoke
                             vector              choice1
+
+                            path-mtu-discovery
+                                enabled  true
+                            exit
                         exit
                         inter-router-security   peer-sec
                         management           true
@@ -117,6 +121,7 @@ let template = `config
                     network-interface    loopback-mgmt
                         name                 loopback-mgmt
                         tenant               {{ model.datacenterTenant }}
+                        source-nat           true
 
                         address            {{ model.loopbackGw }}
                             ip-address        {{ model.loopbackGw }}
@@ -310,8 +315,8 @@ let template = `config
             address        {{ model.DNS1 }}/32
             address        {{ model.DNS2 }}/32
 
-            access-policy  _internal_
-                source     _internal_
+            access-policy  customer
+                source     customer
             exit
         exit
 

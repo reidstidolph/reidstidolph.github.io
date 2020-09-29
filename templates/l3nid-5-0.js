@@ -227,6 +227,9 @@ let template = `config
 
             access-policy         customer
                 source            customer
+            exit
+
+            access-policy         _internal_
                 source            _internal_
             exit
             share-service-routes  false

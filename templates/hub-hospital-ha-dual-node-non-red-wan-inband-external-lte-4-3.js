@@ -48,6 +48,11 @@ let template = `config
                             community  INTERNALPROXY
                         exit
 
+                        access-control         CHS_Polling
+                           name       CHS_Polling
+                           community  CHSSNMPro
+                        exit
+
                         notification-receiver  {{ model.trapServer1 }} 162 trap
                             ip-address  {{ model.trapServer1 }}
                             port        162
@@ -1146,6 +1151,11 @@ let template = `config
                 source      ics-mgmt
                 permission  allow
             exit
+
+            access-policy  bdc.chs-dc
+                source      bdc.chs-dc
+                permission  allow
+            exit
         exit
 
         service  {{ model.node2Name }}-mgmt
@@ -1166,6 +1176,11 @@ let template = `config
 
             access-policy  ics-mgmt
                 source      ics-mgmt
+                permission  allow
+            exit
+
+            access-policy  bdc.chs-dc
+                source      bdc.chs-dc
                 permission  allow
             exit
         exit

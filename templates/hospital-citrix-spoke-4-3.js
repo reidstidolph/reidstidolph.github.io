@@ -16,7 +16,7 @@ let template = `config
 
                 device-interface          AVPN1-enp1s0
 
-                    network-interface     AVPN1-vlan{{ model.wanVlan1 }}
+                    network-interface     AVPN1
 
                         neighborhood         {{ model.hubRouterName }}-MPLS
                             name                {{ model.hubRouterName }}-MPLS
@@ -31,7 +31,7 @@ let template = `config
 
                 device-interface          ADI-enp1s0
 
-                    network-interface     ADI-vlan{{ model.wanVlan2 }}
+                    network-interface     ADI
 
                         neighborhood         {{ model.hubRouterName }}-Internet-Broadband
                             name                {{ model.hubRouterName }}-Internet-Broadband
@@ -68,6 +68,4 @@ var model = {
   hubRouterName: '',
   node1Name: '',
   node2Name: '',
-  wanVlan1: '',
-  wanVlan2: '',
 }

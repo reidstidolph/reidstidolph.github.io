@@ -73,8 +73,8 @@ let template = `config
                        traffic-profile    AVPN-22717
                     exit
 
-                    network-interface     AVPN1-vlan{{ model.wanVlan1 }}
-                        name                 AVPN1-{{ model.wanVlan1 }}
+                    network-interface     AVPN1
+                        name                 AVPN1
                         type                 external
                         vlan                 {{ model.wanVlan1 }}
                         conductor            true
@@ -252,8 +252,8 @@ let template = `config
                        traffic-profile    ADI-Profile
                     exit
 
-                    network-interface     ADI-vlan{{ model.wanVlan2 }}
-                        name                 ADI-vlan{{ model.wanVlan2 }}
+                    network-interface     ADI
+                        name                 ADI
                         type                 external
                         vlan                 {{ model.wanVlan2 }}
                         conductor            true
@@ -560,9 +560,9 @@ let template = `config
                 name          static-prisma-ipsec
                 service-name  prisma-ipsec
 
-                next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+                next-hop      {{ model.node2Name }} ADI
                         node-name   {{ model.node2Name }}
-                        interface   ADI-vlan{{ model.wanVlan2 }}
+                        interface   ADI
                         gateway-ip  {{ model.wanGw2 }}
                 exit
             exit
@@ -655,9 +655,9 @@ let template = `config
                name          static-guest-wifi
                service-name  guest-wifi
 
-               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+               next-hop      {{ model.node2Name }} ADI
                         node-name  {{ model.node2Name }}
-                        interface  ADI-vlan{{ model.wanVlan2 }}
+                        interface  ADI
                         gateway-ip {{ model.wanGw2 }}
                exit
             exit
@@ -686,9 +686,9 @@ let template = `config
                name          static-router-internet
                service-name  router-internet
 
-               next-hop      {{ model.node2Name }} ADI-vlan{{ model.wanVlan2 }}
+               next-hop      {{ model.node2Name }} ADI
                         node-name  {{ model.node2Name }}
-                        interface  ADI-vlan{{ model.wanVlan2 }}
+                        interface  ADI
                         gateway-ip {{ model.wanGw2 }}
                exit
 

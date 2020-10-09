@@ -799,8 +799,8 @@ let template = `config
                 name          static-{{ model.node1Name }}-xcc-mgmt
                 service-name  {{ model.node1Name }}-xcc-mgmt
 
-                next-hop      {{ model.node1Name }} xcc-mgmt
-                        node-name  {{ model.node1Name }}
+                next-hop      {{ model.node2Name }} xcc-mgmt
+                        node-name  {{ model.node2Name }}
                         interface  xcc-mgmt
                 exit
             exit
@@ -809,8 +809,8 @@ let template = `config
                 name          static-{{ model.node2Name }}-xcc-mgmt
                 service-name  {{ model.node2Name }}-xcc-mgmt
 
-                next-hop      {{ model.node2Name }} xcc-mgmt
-                        node-name  {{ model.node2Name }}
+                next-hop      {{ model.node1Name }} xcc-mgmt
+                        node-name  {{ model.node1Name }}
                         interface  xcc-mgmt
                 exit
             exit

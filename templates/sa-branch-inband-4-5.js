@@ -84,7 +84,6 @@ let template = `config
                         name                 WAN2-vlan{{ model.wanVlan2 }}
                         type                 external
                         vlan                 {{ model.wanVlan2 }}
-                        conductor            true
 
                         neighborhood         WAN2
                             name                WAN2
@@ -127,7 +126,7 @@ let template = `config
                 exit
             exit
 
-            service-route               static-internet-route
+            service-route     static-internet-route
                 name          static-internet-route
                 service-name  internet
 
@@ -142,6 +141,30 @@ let template = `config
                     interface  WAN2-vlan{{ model.wanVlan2 }}
                     gateway-ip  {{ model.wanGw2 }}
                 exit
+            exit
+
+            service-route     static-conductor1-backup
+                name          static-conductor1-backup
+                service-name  _conductor_1
+
+                next-hop      {{ model.nodeName }} WAN2-vlan{{ model.wanVlan2 }}
+                    node-name  {{ model.nodeName }}
+                    interface  WAN2-vlan{{ model.wanVlan2 }}
+                    gateway-ip  {{ model.wanGw2 }}
+                exit
+                service-route-policy  sessions-second
+            exit
+
+            service-route-policy                sessions-first
+                name                     sessions-first
+                description              "Highest Priority Path"
+                max-sessions             1000000000
+            exit
+
+            service-route-policy                sessions-second
+                name                     sessions-second
+                description              "Second Priority Path"
+                max-sessions             100000000
             exit
         exit
 

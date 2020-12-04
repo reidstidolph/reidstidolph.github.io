@@ -591,23 +591,14 @@ let template = `config
                 service-route-policy  sessions-first
             exit
 
-            service-route  svr-bdc-prisma-Athena
-                name          svr-bdc-prisma-Athena
-                service-name  Athena
-                generated     false
-                next-peer     BHMAL1-P-SDW-01
-                next-peer     BHMAL1-P-SDW-02
-                service-route-policy  sessions-second
-            exit
-
-            service-route  sfc-prisma-Athena
-                name          sfc-prisma-Athena
+            service-route  static-Athena
+                name          static-Athena
                 service-name  Athena
 
-                next-hop      {{ model.node2Name }} prisma-srv-intf
-                        node-name   {{ model.node2Name }}
-                        interface   prisma-srv-intf
-                        gateway-ip  169.254.129.6
+                next-hop      {{ model.node2Name }} ADI
+                         node-name  {{ model.node2Name }}
+                         interface  ADI
+                         gateway-ip {{ model.wanGw2 }}
                 exit
                 service-route-policy  sessions-first
             exit

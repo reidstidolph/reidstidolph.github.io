@@ -155,12 +155,12 @@ let template = `config
                     name               mgmt
                     description        "Out of band node management"
                     type               ethernet
+                    pci-address        {{ model.mgmtNode1PciAddr }}
+                    forwarding         false
 
                     network-interface    mgmt
                         name                 mgmt
                         default-route        true
-                        pci-address        {{ model.mgmtNode1PciAddr }}
-                        forwarding         false
 
                         address              {{ model.node1mgmtAddress }}
                             ip-address     {{ model.node1mgmtAddress }}
@@ -305,12 +305,12 @@ let template = `config
                     name               mgmt
                     description        "Out of band node management"
                     type               ethernet
+                    pci-address        {{ model.mgmtNode2PciAddr }}
+                    forwarding         false
 
                     network-interface    mgmt
                         name                 mgmt
                         default-route        true
-                        pci-address        {{ model.mgmtNode2PciAddr }}
-                        forwarding         false
 
                         address              {{ model.node2mgmtAddress }}
                             ip-address     {{ model.node2mgmtAddress }}

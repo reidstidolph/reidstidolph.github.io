@@ -162,6 +162,11 @@ let template = `config
                         name                 mgmt
                         default-route        true
 
+                        management-vector
+                            name      mgmt
+                            priority  10
+                        exit
+
                         address              {{ model.node1mgmtAddress }}
                             ip-address     {{ model.node1mgmtAddress }}
                             prefix-length  {{ model.node1mgmtPrefix }}
@@ -311,6 +316,11 @@ let template = `config
                     network-interface    mgmt
                         name                 mgmt
                         default-route        true
+
+                        management-vector
+                            name      mgmt
+                            priority  10
+                        exit
 
                         address              {{ model.node2mgmtAddress }}
                             ip-address     {{ model.node2mgmtAddress }}

@@ -718,6 +718,15 @@ let template = `config
                 service-route-policy  sessions-first
             exit
 
+            service-route  svr-bdc-Athena
+                name          svr-bdc-Athena
+                service-name  Athena
+                generated     false
+                next-peer     BHMAL1-P-SDW-01
+                next-peer     BHMAL1-P-SDW-02
+                service-route-policy  sessions-second
+            exit
+
             service-route  svr-bdc-prisma-Vidistar
                 name          svr-bdc-prisma-Vidistar
                 service-name  Vidistar

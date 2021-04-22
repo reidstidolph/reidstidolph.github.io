@@ -753,15 +753,15 @@ let template = `config
 
             ipsec-profile         prisma
                name                     prisma
-               ike-encryption           aes256
-               ike-digest               sha2
-               ike-modp                 modp2048
+               ike-encryption           3des
+               ike-digest               md5
+               ike-modp                 modp1024
                ikev2                    insist
                authentication-protocol  esp
-               phase2-encryption        aes256
-               phase2-digest            sha2
-               phase2-modp              modp2048
-               ike-lifetime             8h
+               phase2-encryption        null
+               phase2-digest            md5
+               phase2-modp              modp1024
+               ike-lifetime             16h
                connection-lifetime      16h
                compress                 false
                perfect-forward-secrecy  false
